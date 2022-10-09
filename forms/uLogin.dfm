@@ -4217,9 +4217,9 @@ object frmLogin: TfrmLogin
   object chkAdmin: TCheckBox
     Left = 336
     Top = 224
-    Width = 105
+    Width = 89
     Height = 17
-    Caption = 'If Admin, click this'
+    Caption = 'I am an Admin'
     TabOrder = 0
     OnClick = chkAdminClick
   end

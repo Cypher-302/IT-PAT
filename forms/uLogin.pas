@@ -29,7 +29,7 @@ var
   isAdminLocal: Boolean;
 
 implementation
-
+uses uRegistration;
 {$R *.dfm}
 
 procedure TfrmLogin.chkAdminClick(Sender: TObject);
@@ -74,6 +74,7 @@ begin
     showMessage('Welcome admin.');
     isAdmin := TRUE;
     Self.Close;
+    frmRegistration.Close;
   end
   else if (isAdminLocal = TRUE) AND NOT(edtPassword.Text = 'admin') then
     showMessage('Password is incorrect!');
@@ -86,6 +87,7 @@ begin
       messageDlg('Welcome ' + DM2022.tblPlayers['first_name'] + '!', mtInformation, [mbOk],0);
       isUser := TRUE;
       Self.Close;
+      frmRegistration.Close;
     end
     else
       showMessage('Password is incorrect!');
