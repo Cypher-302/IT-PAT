@@ -110,6 +110,7 @@ type
     imgUpdate: TImage;
     btnDelete: TButton;
     btnDBDisplay: TButton;
+    btnHome: TButton;
     procedure btnDBRestoreClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure Tabs;
@@ -159,6 +160,7 @@ type
     procedure imgLoginClick(Sender: TObject);
     procedure btnDeleteClick(Sender: TObject);
     procedure btnDBDisplayClick(Sender: TObject);
+
 
 
   private
@@ -259,6 +261,8 @@ begin
   // Question 1.1
   DM2022.tblPlayers.First;
 end;
+
+
 
 procedure TfrmQuestion2.btnLastClick(Sender: TObject);
 begin

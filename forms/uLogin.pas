@@ -17,6 +17,7 @@ type
     procedure chkAdminClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure imgbtnLoginClick(Sender: TObject);
+    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
@@ -61,6 +62,14 @@ end;
 procedure TfrmLogin.FormActivate(Sender: TObject);
 begin
 isAdminLocal := FALSE;
+end;
+
+procedure TfrmLogin.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+begin
+  case MessageDlg('You are required to Login before accessing home'+#13+'Are you sure you want to exit?', mtConfirmation, [mbOk, mbCancel], 0) of
+   mrOk: Application.Terminate;
+   mrCancel: CanClose := False;
+  end;
 end;
 
 procedure TfrmLogin.imgbtnLoginClick(Sender: TObject);

@@ -8578,8 +8578,8 @@ object frmQuestion2: TfrmQuestion2
         ExplicitHeight = 105
       end
       object imgRegister: TImage
-        Left = 395
-        Top = 341
+        Left = 656
+        Top = 285
         Width = 161
         Height = 40
         Picture.Data = {
@@ -8673,8 +8673,8 @@ object frmQuestion2: TfrmQuestion2
         OnClick = imgRegisterClick
       end
       object imgLogin: TImage
-        Left = 395
-        Top = 232
+        Left = 667
+        Top = 168
         Width = 161
         Height = 79
         Picture.Data = {
@@ -8712,8 +8712,8 @@ object frmQuestion2: TfrmQuestion2
         OnClick = imgLoginClick
       end
       object imgUpdate: TImage
-        Left = 395
-        Top = 387
+        Left = 656
+        Top = 343
         Width = 161
         Height = 30
         Picture.Data = {
@@ -8753,8 +8753,8 @@ object frmQuestion2: TfrmQuestion2
         OnClick = imgUpdateClick
       end
       object btnUpdate: TButton
-        Left = 160
-        Top = 392
+        Left = 768
+        Top = 408
         Width = 75
         Height = 25
         Caption = 'Update'
@@ -8762,8 +8762,8 @@ object frmQuestion2: TfrmQuestion2
         OnClick = btnUpdateClick
       end
       object btnDelete: TButton
-        Left = 280
-        Top = 240
+        Left = 656
+        Top = 128
         Width = 75
         Height = 25
         Caption = 'Delete'
@@ -8771,8 +8771,8 @@ object frmQuestion2: TfrmQuestion2
         OnClick = btnDeleteClick
       end
       object btnDBDisplay: TButton
-        Left = 424
-        Top = 136
+        Left = 696
+        Top = 80
         Width = 75
         Height = 25
         Caption = 'Display'
@@ -9382,6 +9382,14 @@ object frmQuestion2: TfrmQuestion2
       OnClick = actionReportEventsClick
     end
   end
+  object btnHome: TButton
+    Left = 328
+    Top = 336
+    Width = 75
+    Height = 25
+    Caption = 'Home'
+    TabOrder = 2
+  end
   object MainMenu1: TMainMenu
     Left = 888
     Top = 88
@@ -9502,7 +9510,7 @@ object frmQuestion2: TfrmQuestion2
     Left = 888
     Top = 336
     Bitmap = {
-      494C010104000800780020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800800020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

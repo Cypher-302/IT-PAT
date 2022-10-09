@@ -67,6 +67,9 @@
 			<DCCReference Include="forms\uDBDisplay.pas">
 				<Form>frmDBDisplay</Form>
 			</DCCReference>
+			<DCCReference Include="forms\uHome.pas">
+				<Form>frmHome</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
