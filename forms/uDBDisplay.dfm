@@ -3903,81 +3903,12 @@ object frmDBDisplay: TfrmDBDisplay
       C254D99FB9FC4FFFD9}
     Stretch = True
   end
-  object dbgMembers: TDBGrid
+  object dbgDisplay: TDBGrid
     Left = 0
     Top = 0
     Width = 633
     Height = 689
     Align = alCustom
-    DataSource = DM2022.dbsPlayers
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
-    Font.Height = -15
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
-    ParentFont = False
-    PopupMenu = popupDBGrids
-    TabOrder = 1
-    TitleFont.Charset = DEFAULT_CHARSET
-    TitleFont.Color = clBlack
-    TitleFont.Height = -19
-    TitleFont.Name = 'Tahoma'
-    TitleFont.Style = []
-    Columns = <
-      item
-        Expanded = False
-        FieldName = 'ID'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'shirt_size'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'gender'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'birth'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'phone'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'last_name'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'first_name'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'email'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'password'
-        Visible = True
-      end>
-  end
-  object dbgGames: TDBGrid
-    Left = 0
-    Top = 0
-    Width = 633
-    Height = 689
-    Align = alCustom
-    DataSource = DM2022.dbsGames
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     PopupMenu = popupDBGrids
     TabOrder = 0
@@ -3986,37 +3917,6 @@ object frmDBDisplay: TfrmDBDisplay
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
-    Columns = <
-      item
-        Expanded = False
-        FieldName = 'id'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'player1_id'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'player2_id'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'player1_score'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'player2_score'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'winner'
-        Visible = True
-      end>
   end
   object btnFirst: TButton
     Left = 942
@@ -4024,7 +3924,7 @@ object frmDBDisplay: TfrmDBDisplay
     Width = 45
     Height = 34
     Caption = '<<'
-    TabOrder = 2
+    TabOrder = 1
     OnClick = btnFirstClick
   end
   object btnPrior: TButton
@@ -4033,7 +3933,7 @@ object frmDBDisplay: TfrmDBDisplay
     Width = 45
     Height = 34
     Caption = '<'
-    TabOrder = 3
+    TabOrder = 2
     OnClick = btnPriorClick
   end
   object btnNext: TButton
@@ -4042,7 +3942,7 @@ object frmDBDisplay: TfrmDBDisplay
     Width = 45
     Height = 34
     Caption = '>'
-    TabOrder = 4
+    TabOrder = 3
     OnClick = btnNextClick
   end
   object btnLast: TButton
@@ -4051,7 +3951,7 @@ object frmDBDisplay: TfrmDBDisplay
     Width = 45
     Height = 34
     Caption = '>>'
-    TabOrder = 5
+    TabOrder = 4
     OnClick = btnLastClick
   end
   object rdDisplay: TRadioGroup
@@ -4063,7 +3963,7 @@ object frmDBDisplay: TfrmDBDisplay
     Items.Strings = (
       'Members'
       'Games')
-    TabOrder = 6
+    TabOrder = 5
     OnClick = rdDisplayClick
   end
   object popupDBGrids: TPopupMenu
