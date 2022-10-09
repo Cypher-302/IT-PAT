@@ -4214,27 +4214,21 @@ object frmLogin: TfrmLogin
       0000000049454E44AE426082}
     OnClick = imgbtnLoginClick
   end
-  object edtPassword1: TDBEdit
-    Left = 416
-    Top = 296
-    Width = 289
-    Height = 27
-    BorderStyle = bsNone
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
+  object chkAdmin: TCheckBox
+    Left = 336
+    Top = 224
+    Width = 105
+    Height = 17
+    Caption = 'If Admin, click this'
     TabOrder = 0
+    OnClick = chkAdminClick
   end
-  object edtEmail1: TDBEdit
+  object edtEmail: TEdit
     Left = 40
-    Top = 296
+    Top = 290
     Width = 289
-    Height = 25
+    Height = 40
     BorderStyle = bsNone
-    DataSource = DM2022.dbsPlayers
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
@@ -4242,42 +4236,21 @@ object frmLogin: TfrmLogin
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-  end
-  object chkAdmin: TCheckBox
-    Left = 336
-    Top = 224
-    Width = 105
-    Height = 17
-    Caption = 'If Admin, click this'
-    TabOrder = 2
-    OnClick = chkAdminClick
-  end
-  object edtEmail: TEdit
-    Left = 40
-    Top = 344
-    Width = 289
-    Height = 27
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -16
-    Font.Name = 'Tahoma'
-    Font.Style = []
-    ParentFont = False
-    TabOrder = 3
     Text = 'edtEmail'
   end
   object edtPassword: TEdit
     Left = 416
-    Top = 344
+    Top = 290
     Width = 289
-    Height = 27
+    Height = 40
+    BorderStyle = bsNone
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clWindowText
     Font.Height = -16
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 4
+    TabOrder = 2
     Text = 'edtPassword'
   end
 end

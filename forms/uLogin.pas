@@ -9,8 +9,6 @@ uses
 type
   TfrmLogin = class(TForm)
     imgLoginbtn: TImage;
-    edtPassword1: TDBEdit;
-    edtEmail1: TDBEdit;
     imgLogin: TImage;
     imgbtnLogin: TImage;
     chkAdmin: TCheckBox;

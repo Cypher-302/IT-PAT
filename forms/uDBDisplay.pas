@@ -74,7 +74,7 @@ end;
 procedure TfrmDBDisplay.btnNextClick(Sender: TObject);
 begin
 
-  DM2022.tblPlayers.;
+//  DM2022.tblPlayers.;
 {    if dbGamesEn
       then DM2022.tblGames.Next
     else if dbMembersEn
