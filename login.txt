@@ -1,0 +1,1 @@
+Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Church.mdb;Mode=ReadWrite;Persist Security Info=False;Jet OLEDB:Database password=mock2020
