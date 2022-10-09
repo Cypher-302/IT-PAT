@@ -69,8 +69,8 @@ end;
 procedure TfrmDBDisplay.clkDeleteClick(Sender: TObject);
 begin
   case messageDlg('Are you sure that you want to delete this record?', mtConfirmation, [mbYes, mbNo], 0) of
-  mrYes: showmessage('deleted');
-  mrNo:  showmessage('cancelled');
+  mrYes: selectedDB.Delete;
+  mrNo:  messageDlg('Record deletion cancelled.', mtInformation, [mbOk], 0);
   end;
 end;
 
@@ -91,9 +91,7 @@ procedure TfrmDBDisplay.clkInsertClick(Sender: TObject);
 begin
   try
     selectedDB.Insert;
-
     frmRegistration.ShowModal;
-
     selectedDB.Post;
   except
     messageDlg('Unable to insert new registration', mtWarning, [mbOK], 0);

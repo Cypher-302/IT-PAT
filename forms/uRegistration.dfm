@@ -2,7 +2,7 @@ object frmRegistration: TfrmRegistration
   Left = 0
   Top = 0
   Caption = 'Student Registration'
-  ClientHeight = 595
+  ClientHeight = 593
   ClientWidth = 619
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -4442,7 +4442,7 @@ object frmRegistration: TfrmRegistration
     Left = 56
     Top = 224
     Width = 217
-    Height = 25
+    Height = 24
     BorderStyle = bsNone
     DataField = 'first_name'
     DataSource = DM2022.dbsPlayers
