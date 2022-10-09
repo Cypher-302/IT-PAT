@@ -3128,7 +3128,6 @@ object frmLogin: TfrmLogin
     FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
   OldCreateOrder = False
   OnActivate = FormActivate
-  OnCloseQuery = FormCloseQuery
   PixelsPerInch = 96
   TextHeight = 13
   object imgLoginbtn: TImage
@@ -4237,7 +4236,6 @@ object frmLogin: TfrmLogin
     Font.Style = []
     ParentFont = False
     TabOrder = 1
-    Text = 'edtEmail'
   end
   object edtPassword: TEdit
     Left = 416
@@ -4252,6 +4250,5 @@ object frmLogin: TfrmLogin
     Font.Style = []
     ParentFont = False
     TabOrder = 2
-    Text = 'edtPassword'
   end
 end

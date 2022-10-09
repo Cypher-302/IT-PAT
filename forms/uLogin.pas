@@ -17,16 +17,16 @@ type
     procedure chkAdminClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure imgbtnLoginClick(Sender: TObject);
-    procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
   private
     { Private declarations }
   public
     { Public declarations }
+    isAdmin, isUser : Boolean;
   end;
 
 var
   frmLogin: TfrmLogin;
-  isAdmin, isAdminLocal : Boolean;
+  isAdminLocal: Boolean;
 
 implementation
 
@@ -34,54 +34,63 @@ implementation
 
 procedure TfrmLogin.chkAdminClick(Sender: TObject);
 begin
-if (chkAdmin.Checked)
- then
-    BEGIN
-      isAdminLocal := TRUE;
-      edtEmail.Text := 'Enter Admin password in the correct field to continue';
-      edtEmail.ReadOnly := TRUE;
-      edtEmail.Enabled := FALSE;
-      edtPassword.Clear;
-      edtPassword.Color := clRed;
-      edtPassword.SetFocus;
-    END
- else if not(chkAdmin.Checked)
-  then
-    BEGIN
-      isAdminLocal := FALSE;
-      edtEmail.Clear;
-      edtEmail.ReadOnly := FALSE;
-      edtEmail.Enabled := TRUE;
-      edtPassword.Clear;
-      edtPassword.Color := clWindow;
-      edtEmail.SetFocus;
-    END;
+  if (chkAdmin.Checked) then
+  BEGIN
+    isAdminLocal := TRUE;
+    edtEmail.Text := 'Enter Admin password in the correct field to continue';
+    edtEmail.ReadOnly := TRUE;
+    edtEmail.Enabled := FALSE;
+    edtPassword.Clear;
+    edtPassword.Color := clRed;
+    edtPassword.SetFocus;
+  END
+  else if not(chkAdmin.Checked) then
+  BEGIN
+    isAdminLocal := FALSE;
+    edtEmail.Clear;
+    edtEmail.ReadOnly := FALSE;
+    edtEmail.Enabled := TRUE;
+    edtPassword.Clear;
+    edtPassword.Color := clWindow;
+    edtEmail.SetFocus;
+  END;
 
 end;
 
 procedure TfrmLogin.FormActivate(Sender: TObject);
 begin
-isAdminLocal := FALSE;
+  isAdminLocal := FALSE;
+  isAdmin := FALSE;
+  isUser := FALSE;
 end;
 
-procedure TfrmLogin.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
-begin
-  case MessageDlg('You are required to Login before accessing home'+#13+'Are you sure you want to exit?', mtConfirmation, [mbOk, mbCancel], 0) of
-   mrOk: Application.Terminate;
-   mrCancel: CanClose := False;
-  end;
-end;
 
 procedure TfrmLogin.imgbtnLoginClick(Sender: TObject);
-var DBPass : String;
+var
+  DBPass: String;
 begin
-  if (isAdminLocal = TRUE) AND (edtPassword.Text = 'admin') then showMessage('Thou ist an ADMIN!');
-  if not(isAdminLocal) AND (DM2022.tblPlayers.Locate('email',edtEmail.Text,[]) = TRUE) then
-    BEGIN
-      DBPass := DM2022.tblPlayers['Password'];
-      if (DBPass = edtPassword.Text) then showMessage('Welcome' + DM2022.tblPlayers['first_name'] +'!');
+  if (isAdminLocal = TRUE) AND (edtPassword.Text = 'admin') then
+  begin
+    showMessage('Welcome admin.');
+    isAdmin := TRUE;
+    Self.Close;
+  end
+  else if (isAdminLocal = TRUE) AND NOT(edtPassword.Text = 'admin') then
+    showMessage('Password is incorrect!');
 
-    END;
+  if not(isAdminLocal) AND (DM2022.tblPlayers.Locate('email', edtEmail.Text,[]) = TRUE) then
+  BEGIN
+    DBPass := edtPassword.Text;
+    if (DM2022.tblPlayers.Locate('password', DBPass,[]) = TRUE) then
+    begin
+      messageDlg('Welcome ' + DM2022.tblPlayers['first_name'] + '!', mtInformation, [mbOk],0);
+      isUser := TRUE;
+      Self.Close;
+    end
+    else
+      showMessage('Password is incorrect!');
+  END
+  else if not(isAdminLocal) AND (DM2022.tblPlayers.Locate('email', edtEmail.Text,[]) = FALSE) then showMessage('Email was not found!');
 
 end;
 

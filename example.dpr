@@ -2,7 +2,6 @@ program example;
 
 uses
   Forms,
-
   uMain in 'forms\uMain.pas' {frmMain},
   uLogin in 'forms\uLogin.pas' {frmLogin},
   uDM2022 in 'forms\uDM2022.pas' {DM2022: TDataModule},
