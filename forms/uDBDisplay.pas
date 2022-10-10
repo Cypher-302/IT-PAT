@@ -20,6 +20,7 @@ type
     clkInsert: TMenuItem;
     clkEdit: TMenuItem;
     clkDelete: TMenuItem;
+    btnDelete1000: TButton;
     procedure FormActivate(Sender: TObject);
     procedure rdDisplayClick(Sender: TObject);
     procedure btnNextClick(Sender: TObject);
@@ -29,6 +30,11 @@ type
     procedure clkInsertClick(Sender: TObject);
     procedure clkEditClick(Sender: TObject);
     procedure clkDeleteClick(Sender: TObject);
+    procedure updateCol();
+//    procedure QuickSort(var A: array of Integer; iLo, iHi: Integer);
+    procedure FitGrid(Grid: TDBGrid);
+    procedure refresh();
+    procedure btnDelete1000Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -64,6 +70,23 @@ end;
 procedure TfrmDBDisplay.btnPriorClick(Sender: TObject);
 begin
   selectedDB.Prior;
+end;
+
+procedure TfrmDBDisplay.btnDelete1000Click(Sender: TObject);
+var
+  id: Integer;
+begin
+  DM2022.tblPlayers.Last;
+  id := DM2022.tblPlayers['ID'];
+
+  while (id > 1000) do
+  begin
+    DM2022.tblPlayers.Delete;
+    showMessage('Deleted record with ID: ' + IntToStr(id));
+
+    DM2022.tblPlayers.Last;
+    id := DM2022.tblPlayers['ID'];
+  end;
 end;
 
 procedure TfrmDBDisplay.clkDeleteClick(Sender: TObject);
@@ -109,12 +132,106 @@ end;
 
 // -------------------------------------------------------
 
+procedure TfrmDBDisplay.FitGrid(Grid: TDBGrid);
+const pixSpc = 5;
+var
+  selectedDS: TDataSet;
+  currentPOS: TBookmark;
+  iLoop: Integer;
+  width: Integer;
+  arrCol: Array of Integer;
+begin
+  selectedDS := Grid.DataSource.DataSet;
+  if Assigned(selectedDS) then
+  begin
+    selectedDS.DisableControls;
+    currentPOS := selectedDS.GetBookmark;
+    try
+      selectedDS.First;
+      SetLength(arrCol, Grid.Columns.Count);
+      while not selectedDS.Eof do
+      begin
+        for iLoop := 0 to Grid.Columns.Count - 1 do
+        begin
+          if Assigned(Grid.Columns[iLoop].Field) then
+          begin
+            width:=  Grid.Canvas.TextWidth(selectedDS.FieldByName(Grid.Columns[iLoop].Field.FieldName).DisplayText);
+            if arrCol[iLoop] < width  then
+               arrCol[iLoop] := width;
+          end;
+        end;
+        selectedDS.Next;
+      end;
+
+	    selectedDS.GotoBookmark(currentPOS);
+      for iLoop:= 0 to Grid.Columns.Count - 1 do
+        if arrCol[iLoop] < Grid.Canvas.TextWidth(Grid.Columns[iLoop].Field.FieldName) then
+         Grid.Columns[iLoop].Width := Grid.Canvas.TextWidth(Grid.Columns[iLoop].Field.FieldName) + pixSpc
+        else
+         Grid.Columns[iLoop].Width := arrCol[iLoop] + pixSpc;
+
+    finally
+      selectedDS.FreeBookmark(currentPOS);
+      selectedDS.EnableControls;
+    end;
+  end;
+end;
+
 procedure TfrmDBDisplay.FormActivate(Sender: TObject);
 begin
 
   dbColor := HexToTColor('B6D6CC');
-  rdDisplay.ItemIndex := 0;
+  refresh();
 
+end;
+
+{procedure TfrmDBDisplay.QuickSort(var A: array of Integer; iLo, iHi: Integer);
+ var
+   Lo, Hi, Pivot, T: Integer;
+ begin
+   Lo := iLo;
+   Hi := iHi;
+   Pivot := A[(Lo + Hi) div 2];
+   repeat
+     while A[Lo] < Pivot do Inc(Lo);
+     while A[Hi] > Pivot do Dec(Hi);
+     if Lo <= Hi then
+     begin
+       T := A[Lo];
+       A[Lo] := A[Hi];
+       A[Hi] := T;
+       Inc(Lo);
+       Dec(Hi);
+     end;
+   until Lo > Hi;
+   if Hi > iLo then QuickSort(A, iLo, Hi);
+   if Lo < iHi then QuickSort(A, Lo, iHi);
+end;}
+
+procedure TfrmDBDisplay.updateCol();
+var iLoop, colWidth, columnsAMT : Integer;
+begin
+  colWidth := 0;
+
+  if dbgDisplay.DataSource = DM2022.dbsPlayers then
+    begin
+      selectedDB := DM2022.tblPlayers;
+      columnsAMT := dbgDisplay.Columns.Count - 1;
+      dbgDisplay.Columns[columnsAMT].Visible := FALSE;
+    end
+  else if dbgDisplay.DataSource = DM2022.dbsGames then
+    begin
+    selectedDB := DM2022.tblGames;
+    columnsAMT := dbgDisplay.Columns.Count - 1;
+    end;
+
+  for iLoop := 0 to columnsAMT do
+    dbgDisplay.Columns[iLoop].Color := dbColor;
+
+  for iLoop := 0 to columnsAMT do
+    colWidth := colWidth + dbgDisplay.Columns[iLoop].Width;
+
+  dbgDisplay.Width := colWidth + 38;
 end;
 
 procedure TfrmDBDisplay.rdDisplayClick(Sender: TObject);
@@ -125,21 +242,25 @@ begin
   if (rdDisplay.ItemIndex = 0) then
   begin
     dbgDisplay.DataSource := DM2022.dbsPlayers;
-    selectedDB := DM2022.tblPlayers;
-    columnsAMT := dbgDisplay.Columns.Count - 1;
-    dbgDisplay.Columns[columnsAMT].Visible := FALSE;
+    updateCol();
   end;
 
   if (rdDisplay.ItemIndex = 1) then
   begin
     dbgDisplay.DataSource := DM2022.dbsGames;
-    selectedDB := DM2022.tblGames;
-    columnsAMT := dbgDisplay.Columns.Count - 1;
+    updateCol();
   end;
 
-  for iLoop := 0 to columnsAMT do
-    dbgDisplay.Columns[iLoop].Color := dbColor;
+end;
 
+procedure TfrmDBDisplay.refresh;
+begin
+  rdDisplay.ItemIndex := 0;
+  FitGrid(dbgDisplay);
+  updateCol();
+  {rdDisplay.ItemIndex := 1;
+  FitGrid(dbgDisplay);}
+  showmessage('Refreshed!');
 end;
 
 end.

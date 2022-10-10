@@ -3564,6 +3564,15 @@ object frmDBDisplay: TfrmDBDisplay
     TabOrder = 5
     OnClick = rdDisplayClick
   end
+  object btnDelete1000: TButton
+    Left = 942
+    Top = 328
+    Width = 172
+    Height = 25
+    Caption = 'Delete all records after 1000'
+    TabOrder = 6
+    OnClick = btnDelete1000Click
+  end
   object popupDBGrids: TPopupMenu
     Left = 1072
     Top = 24

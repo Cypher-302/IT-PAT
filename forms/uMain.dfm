@@ -3152,7 +3152,7 @@ object frmQuestion2: TfrmQuestion2
     Top = 38
     Width = 950
     Height = 617
-    ActivePage = tbsQ2_2
+    ActivePage = tbsQ1_1
     Align = alClient
     TabOrder = 0
     object tbsQ1_1: TTabSheet

@@ -12,11 +12,9 @@ type
     btnChangelog: TImage;
     btnPodium: TImage;
     btnViewDB: TImage;
-    Button1: TButton;
     procedure btnViewDBClick(Sender: TObject);
     procedure btnPodiumClick(Sender: TObject);
     procedure btnChangelogClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
   private
@@ -48,11 +46,6 @@ end;
 procedure TfrmHome.btnViewDBClick(Sender: TObject);
 begin
   frmDBDisplay.ShowModal;
-end;
-
-procedure TfrmHome.Button1Click(Sender: TObject);
-begin
-  frmQuestion2.ShowModal;
 end;
 
 procedure TfrmHome.FormActivate(Sender: TObject);
