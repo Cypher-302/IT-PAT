@@ -68,9 +68,12 @@ end;
 
 procedure TfrmDBDisplay.clkDeleteClick(Sender: TObject);
 begin
-  case messageDlg('Are you sure that you want to delete this record?', mtConfirmation, [mbYes, mbNo], 0) of
-  mrYes: selectedDB.Delete;
-  mrNo:  messageDlg('Record deletion cancelled.', mtInformation, [mbOk], 0);
+  case messageDlg('Are you sure that you want to delete this record?',
+    mtConfirmation, [mbYes, mbNo], 0) of
+    mrYes:
+      selectedDB.Delete;
+    mrNo:
+      messageDlg('Record deletion cancelled.', mtInformation, [mbOk], 0);
   end;
 end;
 
@@ -83,7 +86,7 @@ begin
 
     selectedDB.Post;
   except
-    messageDlg('Unable to insert new registration', mtWarning, [mbOK], 0);
+    messageDlg('Unable to insert new registration', mtWarning, [mbOk], 0);
   end;
 end;
 
@@ -94,7 +97,7 @@ begin
     frmRegistration.ShowModal;
     selectedDB.Post;
   except
-    messageDlg('Unable to insert new registration', mtWarning, [mbOK], 0);
+    messageDlg('Unable to insert new registration', mtWarning, [mbOk], 0);
   end;
 end;
 
@@ -115,14 +118,15 @@ begin
 end;
 
 procedure TfrmDBDisplay.rdDisplayClick(Sender: TObject);
-var   columnsAMT, iLoop : Integer;
+var
+  columnsAMT, iLoop: Integer;
 begin
 
   if (rdDisplay.ItemIndex = 0) then
   begin
     dbgDisplay.DataSource := DM2022.dbsPlayers;
     selectedDB := DM2022.tblPlayers;
-    columnsAMT := dbgDisplay.Columns.Count -1;
+    columnsAMT := dbgDisplay.Columns.Count - 1;
     dbgDisplay.Columns[columnsAMT].Visible := FALSE;
   end;
 
@@ -130,10 +134,11 @@ begin
   begin
     dbgDisplay.DataSource := DM2022.dbsGames;
     selectedDB := DM2022.tblGames;
-    columnsAMT := dbgDisplay.Columns.Count -1;
+    columnsAMT := dbgDisplay.Columns.Count - 1;
   end;
 
-  for iLoop := 0 to columnsAMT do dbgDisplay.Columns[iLoop].Color := dbColor;
+  for iLoop := 0 to columnsAMT do
+    dbgDisplay.Columns[iLoop].Color := dbColor;
 
 end;
 

@@ -21,32 +21,33 @@ type
     { Private declarations }
   public
     { Public declarations }
-    isAdmin, isUser : Boolean;
+    isAdmin: Boolean;
   end;
 
 var
   frmLogin: TfrmLogin;
-  isAdminLocal: Boolean;
+  isAdminSlc: Boolean;
 
 implementation
-uses uRegistration;
+
+uses uRegistration, uHome;
 {$R *.dfm}
 
 procedure TfrmLogin.chkAdminClick(Sender: TObject);
 begin
   if (chkAdmin.Checked) then
   BEGIN
-    isAdminLocal := TRUE;
+    isAdminSlc := TRUE;
     edtEmail.Text := 'Enter Admin password in the correct field to continue';
     edtEmail.ReadOnly := TRUE;
     edtEmail.Enabled := FALSE;
     edtPassword.Clear;
-    edtPassword.Color := clRed;
+    edtPassword.Color := clHighlight;
     edtPassword.SetFocus;
   END
   else if not(chkAdmin.Checked) then
   BEGIN
-    isAdminLocal := FALSE;
+    isAdminSlc := FALSE;
     edtEmail.Clear;
     edtEmail.ReadOnly := FALSE;
     edtEmail.Enabled := TRUE;
@@ -59,40 +60,40 @@ end;
 
 procedure TfrmLogin.FormActivate(Sender: TObject);
 begin
-  isAdminLocal := FALSE;
+  isAdminSlc := FALSE;
   isAdmin := FALSE;
-  isUser := FALSE;
 end;
-
 
 procedure TfrmLogin.imgbtnLoginClick(Sender: TObject);
 var
   DBPass: String;
 begin
-  if (isAdminLocal = TRUE) AND (edtPassword.Text = 'admin') then
+  if (isAdminSlc = TRUE) AND (edtPassword.Text = 'admin') then
   begin
-    showMessage('Welcome admin.');
+    messageDlg('Welcome admin.', mtInformation, [mbOk], 0);
     isAdmin := TRUE;
+    frmHome.isValid := TRUE;
     Self.Close;
     frmRegistration.Close;
   end
-  else if (isAdminLocal = TRUE) AND NOT(edtPassword.Text = 'admin') then
-    showMessage('Password is incorrect!');
+  else if (isAdminSlc = TRUE) AND NOT(edtPassword.Text = 'admin') then
+    messageDlg('Password is incorrect!',mtWarning,[mbOk],0);
 
-  if not(isAdminLocal) AND (DM2022.tblPlayers.Locate('email', edtEmail.Text,[]) = TRUE) then
+  if not(isAdminSlc) AND (DM2022.tblPlayers.Locate('email', edtEmail.Text,[]) = TRUE) then
   BEGIN
     DBPass := edtPassword.Text;
-    if (DM2022.tblPlayers.Locate('password', DBPass,[]) = TRUE) then
+    if (DM2022.tblPlayers.Locate('password', DBPass, []) = TRUE) then
     begin
-      messageDlg('Welcome ' + DM2022.tblPlayers['first_name'] + '!', mtInformation, [mbOk],0);
-      isUser := TRUE;
+      messageDlg('Welcome ' + DM2022.tblPlayers['first_name'] + '!',mtInformation, [mbOk], 0);
+      frmHome.isValid := TRUE;
       Self.Close;
       frmRegistration.Close;
     end
     else
-      showMessage('Password is incorrect!');
+      messageDlg('Password is incorrect!',mtWarning,[mbOk],0);
   END
-  else if not(isAdminLocal) AND (DM2022.tblPlayers.Locate('email', edtEmail.Text,[]) = FALSE) then showMessage('Email was not found!');
+  else if not(isAdminSlc) AND (DM2022.tblPlayers.Locate('email',edtEmail.Text, []) = FALSE) then
+    messageDlg('Email was not found!',mtWarning,[mbOk],0);
 
 end;
 

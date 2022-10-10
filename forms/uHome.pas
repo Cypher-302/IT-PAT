@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, pngimage, ExtCtrls, uDBDisplay, uMain, StdCtrls, uRegistration;
+  Dialogs, pngimage, ExtCtrls, StdCtrls, uDM2022;
 
 type
   TfrmHome = class(TForm)
@@ -17,12 +17,13 @@ type
     procedure btnPodiumClick(Sender: TObject);
     procedure btnChangelogClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-
     procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+    isValid : Boolean;
   end;
 
 var
@@ -32,14 +33,16 @@ implementation
 
 {$R *.dfm}
 
+uses uDBDisplay, uMain, uRegistration, uLogin;
+
 procedure TfrmHome.btnChangelogClick(Sender: TObject);
 begin
-//opens changelog
+  // opens changelog
 end;
 
 procedure TfrmHome.btnPodiumClick(Sender: TObject);
 begin
-//display Podium Positions
+  // display Podium Positions
 end;
 
 procedure TfrmHome.btnViewDBClick(Sender: TObject);
@@ -49,14 +52,26 @@ end;
 
 procedure TfrmHome.Button1Click(Sender: TObject);
 begin
-frmQuestion2.ShowModal;
+  frmQuestion2.ShowModal;
 end;
-
-
 
 procedure TfrmHome.FormActivate(Sender: TObject);
 begin
- frmRegistration.ShowModal;
+  if not(isValid) then
+  try
+    DM2022.tblPlayers.Insert;
+
+    frmRegistration.ShowModal;
+
+    if isValid then DM2022.tblPlayers.Post;
+  except
+     if not(isValid) then messageDlg('Unable to insert new registration', mtWarning, [mbOk], 0);
+  end;
+end;
+
+procedure TfrmHome.FormCreate(Sender: TObject);
+begin
+isValid := FALSE;
 end;
 
 end.

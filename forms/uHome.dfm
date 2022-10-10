@@ -3128,6 +3128,7 @@ object frmHome: TfrmHome
     FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
   OldCreateOrder = False
   OnActivate = FormActivate
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object imgHome: TImage
@@ -4273,9 +4274,9 @@ object frmHome: TfrmHome
   end
   object Button1: TButton
     Left = 440
-    Top = 272
-    Width = 75
-    Height = 25
+    Top = 192
+    Width = 121
+    Height = 209
     Caption = 'Button1'
     TabOrder = 0
     OnClick = Button1Click

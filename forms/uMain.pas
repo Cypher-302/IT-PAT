@@ -161,22 +161,19 @@ type
     procedure btnDeleteClick(Sender: TObject);
     procedure btnDBDisplayClick(Sender: TObject);
 
-
-
   private
   var
     sSQL: string;
 
-
   public
     { Public declarations }
 
-    function isValidEmail(data : String): Boolean;
-    function isValidPhone(data : String): Boolean;
+    function isValidEmail(data: String): Boolean;
+    function isValidPhone(data: String): Boolean;
     procedure applyFilter();
-    procedure enableLogin(usertype : Integer);
+    procedure enableLogin(usertype: Integer);
     procedure sqlExecuteStatement;
-    procedure runSQL(sSql : String);
+    procedure runSQL(sSQL: String);
 
   end;
 
@@ -184,16 +181,18 @@ var
   frmQuestion2: TfrmQuestion2;
 
 implementation
+
 Uses uLogin;
 
-const help_online = 'https://github.com/GrahamPearl/INFT11/wiki';
+const
+  help_online = 'https://github.com/GrahamPearl/INFT11/wiki';
 
 procedure TfrmQuestion2.Online1Click(Sender: TObject);
 begin
   WebBrowser1.Navigate(help_online);
 end;
 
-procedure TfrmQuestion2.runSQL(sSql: String);
+procedure TfrmQuestion2.runSQL(sSQL: String);
 begin
   DM2022.qry.SQL.Clear;
   DM2022.qry.SQL.ADD(sSQL);
@@ -202,26 +201,27 @@ begin
 end;
 
 procedure TfrmQuestion2.sqlExecuteStatement;
-var sSQL : String;
-    iLoop : Integer;
+var
+  sSQL: String;
+  iLoop: Integer;
 begin
   sSQL := '';
-  for iLoop := 0 to redSQL.Lines.Count-1 do
-      sSQL := sSQL + ' '+ redSQL.Lines[iLoop];
+  for iLoop := 0 to redSQL.Lines.Count - 1 do
+    sSQL := sSQL + ' ' + redSQL.Lines[iLoop];
   self.runSQL(sSQL);
 end;
 
 procedure TfrmQuestion2.SQLfromTextfile1Click(Sender: TObject);
 begin
   if OpenDialog1.Execute then
-     redSQL.Lines.LoadFromFile(OpenDialog1.FileName);
+    redSQL.Lines.LoadFromFile(OpenDialog1.FileName);
 end;
 
 procedure TfrmQuestion2.Tabs;
 begin
 
-  //dbgSQL.Columns[0].Width := 150;
-  //dbgSQL.Columns[1].Width := 150;
+  // dbgSQL.Columns[0].Width := 150;
+  // dbgSQL.Columns[1].Width := 150;
 
 end;
 
@@ -241,11 +241,13 @@ begin
 end;
 
 procedure TfrmQuestion2.applyFilter;
-var playerID : String;
+var
+  playerID: String;
 begin
   playerID := DM2022.tblPlayers.FieldByName('ID').AsString;
   DM2022.tblGames.Filtered := False;
-  DM2022.tblGames.Filter := 'player1_id = '+playerID+' OR player2_id = '+playerID;
+  DM2022.tblGames.Filter := 'player1_id = ' + playerID + ' OR player2_id = ' +
+    playerID;
   DM2022.tblGames.Filtered := True;
 end;
 
@@ -261,8 +263,6 @@ begin
   // Question 1.1
   DM2022.tblPlayers.First;
 end;
-
-
 
 procedure TfrmQuestion2.btnLastClick(Sender: TObject);
 begin
@@ -329,26 +329,27 @@ begin
 end;
 
 procedure TfrmQuestion2.btnQ2_1_9Click(Sender: TObject);
-var iLoop : integer;
-    aLine : String;
-    tf : Textfile;
+var
+  iLoop: Integer;
+  aLine: String;
+  tf: Textfile;
 begin
   self.runSQL('SELECT * FROM players');
 
-  AssignFile(tf,'report.txt');
-     Rewrite(tf);
+  AssignFile(tf, 'report.txt');
+  Rewrite(tf);
 
-     DM2022.qry.First;
-     While NOT DM2022.qry.Eof Do Begin
-       aLine := 'Name : '+DM2022.qry['last_name'];
-       WriteLN(tf, aLine);
-       DM2022.qry.Next;
-     End;
+  DM2022.qry.First;
+  While NOT DM2022.qry.Eof Do
+  Begin
+    aLine := 'Name : ' + DM2022.qry['last_name'];
+    WriteLN(tf, aLine);
+    DM2022.qry.Next;
+  End;
 
-   CloseFile(tf);
-   showMessage('Report Generated');
+  CloseFile(tf);
+  showMessage('Report Generated');
 end;
-
 
 procedure TfrmQuestion2.btnQ2_2_1Click(Sender: TObject);
 begin
@@ -365,77 +366,88 @@ begin
 
 end;
 
-//uses DateUtils;
+// uses DateUtils;
 procedure TfrmQuestion2.btnValidateClick(Sender: TObject);
 begin
-  IF Length(edtFirstName.text) > 3
-  then edtFirstName.Color := clWindow
-  else edtFirstName.Color := clHighlight;
+  IF Length(edtFirstName.text) > 3 then
+    edtFirstName.Color := clWindow
+  else
+    edtFirstName.Color := clHighlight;
 
-  IF Length(edtLastName.text) > 3
-  then edtLastName.Color := clWindow
-  else edtLastName.Color := clHighlight;
+  IF Length(edtLastName.text) > 3 then
+    edtLastName.Color := clWindow
+  else
+    edtLastName.Color := clHighlight;
 
-  IF (Length(edtPhone.text) > 9) AND (edtPhone.text[4] = '-') AND (edtPhone.text[8] = '-')
-  then edtPhone.Color := clWindow
-  else edtPhone.Color := clHighlight;
+  IF (Length(edtPhone.text) > 9) AND (edtPhone.text[4] = '-') AND
+    (edtPhone.text[8] = '-') then
+    edtPhone.Color := clWindow
+  else
+    edtPhone.Color := clHighlight;
 
-  //if (POS('@', edtEmail.Text) >0)
+  // if (POS('@', edtEmail.Text) >0)
   // then edtEmail.Colour := clWindow;
   // else edtEmail.Colour := clHighlight;
 
-  IF (dtpBirth.Date > today)
-  then showMessage('Date is in the future - please check');
+  IF (dtpBirth.Date > today) then
+    showMessage('Date is in the future - please check');
 
 end;
 
 function TfrmQuestion2.isValidEmail(data: String): Boolean;
 begin
- result := true;
+  result := True;
 end;
 
 function TfrmQuestion2.isValidPhone(data: String): Boolean;
 begin
- result := true;
+  result := True;
 end;
 
 procedure TfrmQuestion2.Login2Click(Sender: TObject);
 begin
   frmLogin.ShowModal;
-       if (frmLogin.edtEmail.Text = 'Admin') AND (frmLogin.edtPassword.Text = '12345')
-  then enableLogin(1)
-  else if (frmLogin.edtEmail.Text = 'User')
-  then enableLogin(0)
-  else enableLogin(-1);
+  if (frmLogin.edtEmail.text = 'Admin') AND
+    (frmLogin.edtPassword.text = '12345') then
+    enableLogin(1)
+  else if (frmLogin.edtEmail.text = 'User') then
+    enableLogin(0)
+  else
+    enableLogin(-1);
 end;
 
 procedure TfrmQuestion2.enableLogin(usertype: Integer);
 begin
-   self.ADo1.Enabled := (usertype = 0);
-   self.SQLEvents1.Enabled := (usertype = 1);
-   self.Reports1.Enabled := (usertype = 1);
-   self.gbMain.Enabled := (usertype = 1);
-   self.gbRegistration.Enabled := (usertype = 1);
-   self.gbQueries.Enabled := (usertype = 1);
+  self.ADo1.Enabled := (usertype = 0);
+  self.SQLEvents1.Enabled := (usertype = 1);
+  self.Reports1.Enabled := (usertype = 1);
+  self.gbMain.Enabled := (usertype = 1);
+  self.gbRegistration.Enabled := (usertype = 1);
+  self.gbQueries.Enabled := (usertype = 1);
 
-   self.actionADOEvents.Enabled := (usertype = 0);
-   self.actionSQLEvents.Enabled := (usertype = 1);
-   self.actionReportEvents.Enabled := (usertype = 1);
+  self.actionADOEvents.Enabled := (usertype = 0);
+  self.actionSQLEvents.Enabled := (usertype = 1);
+  self.actionReportEvents.Enabled := (usertype = 1);
 
-   case usertype of
-    -1: pgcQuestions.ActivePageIndex := 2;
-     0: pgcQuestions.ActivePageIndex := 0;
-     1: pgcQuestions.ActivePageIndex := 1;
-   end;
+  case usertype of
+    - 1:
+      pgcQuestions.ActivePageIndex := 2;
+    0:
+      pgcQuestions.ActivePageIndex := 0;
+    1:
+      pgcQuestions.ActivePageIndex := 1;
+  end;
 
 end;
 
 procedure TfrmQuestion2.Logout1Click(Sender: TObject);
-begin enableLogin(-1);
+begin
+  enableLogin(-1);
 end;
 
 procedure TfrmQuestion2.Button3Click(Sender: TObject);
-begin sqlExecuteStatement;
+begin
+  sqlExecuteStatement;
 end;
 
 procedure TfrmQuestion2.dbgMembersCellClick(Column: TColumn);
@@ -454,14 +466,13 @@ procedure TfrmQuestion2.dbgMembersMouseWheel(Sender: TObject;
 begin
   self.applyFilter;
 end;
-
 {$R *.dfm}
 // =================================Question 2.2==============================================
 {$REGION}
 
 procedure TfrmQuestion2.FormActivate(Sender: TObject);
 begin
-//  enableLogin(-1);
+  // enableLogin(-1);
 end;
 
 procedure TfrmQuestion2.FormatTabs;
@@ -472,7 +483,8 @@ begin
   redOutput.Paragraph.Tab[1] := 150;
   redOutput.Paragraph.Tab[2] := 20;
 
-  redOutput.Lines.ADD('First Name' + #9 + 'Last Name' + #9 + 'Age Group'+ #9 + 'Gender');
+  redOutput.Lines.ADD('First Name' + #9 + 'Last Name' + #9 + 'Age Group' + #9 +
+      'Gender');
 
   redOutput.Lines.ADD('');
 
@@ -485,33 +497,35 @@ end;
 
 procedure TfrmQuestion2.imgLoginClick(Sender: TObject);
 begin
-frmLogin.ShowModal;
+  frmLogin.ShowModal;
 end;
 
 procedure TfrmQuestion2.imgRegisterClick(Sender: TObject);
 begin
-try
-DM2022.tblPlayers.Insert;
+  try
+    DM2022.tblPlayers.Insert;
 
-frmRegistration.ShowModal;
+    frmRegistration.ShowModal;
 
-DM2022.tblPlayers.Post;
-except   //put finally to display even when no error
-  messageDlg('Unable to insert new registration',mtWarning,[mbOk],0); //or mtInformation
-end;
+    DM2022.tblPlayers.Post;
+  except // put finally to display even when no error
+    messageDlg('Unable to insert new registration', mtWarning, [mbOk], 0);
+    // or mtInformation
+  end;
 end;
 
 procedure TfrmQuestion2.imgUpdateClick(Sender: TObject);
 begin
-try
-DM2022.tblPlayers.Edit;
+  try
+    DM2022.tblPlayers.Edit;
 
-frmRegistration.ShowModal;
+    frmRegistration.ShowModal;
 
-DM2022.tblPlayers.Post;
-except   //put finally to display even when no error
-  messageDlg('Unable to update record',mtWarning,[mbOk],0); //or mtInformation
-end;
+    DM2022.tblPlayers.Post;
+  except // put finally to display even when no error
+    messageDlg('Unable to update record', mtWarning, [mbOk], 0);
+    // or mtInformation
+  end;
 end;
 
 procedure TfrmQuestion2.Insert2Click(Sender: TObject);
@@ -528,21 +542,21 @@ begin
   end;
 end;
 
-
 procedure TfrmQuestion2.Delete2Click(Sender: TObject);
 begin
- IF MessageDlg('Are you sure you want to delete this record?',mtConfirmation,[mbYes, mbNo],0) = mrYes then
+  IF messageDlg('Are you sure you want to delete this record?', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
     DM2022.tblPlayers.Delete;
 end;
 
 procedure TfrmQuestion2.dtpBirthCloseUp(Sender: TObject);
 begin
-  self.edtBirth.Text := DateToStr(self.dtpBirth.Date);
+  self.edtBirth.text := DateToStr(self.dtpBirth.Date);
 end;
 
 procedure TfrmQuestion2.dtpBirthExit(Sender: TObject);
 begin
- self.edtBirth.Text := DateToStr(self.dtpBirth.Date);
+  self.edtBirth.text := DateToStr(self.dtpBirth.Date);
 end;
 
 procedure TfrmQuestion2.btnOkayClick(Sender: TObject);
@@ -550,19 +564,21 @@ begin
   DM2022.tblPlayers.Post;
 end;
 
-
 procedure TfrmQuestion2.Edit2Click(Sender: TObject);
 begin
   DM2022.tblPlayers.Edit;
 end;
 
 procedure TfrmQuestion2.ExecuteSQLStatement1Click(Sender: TObject);
-begin sqlExecuteStatement;
+begin
+  sqlExecuteStatement;
 end;
 
 procedure TfrmQuestion2.Exit1Click(Sender: TObject);
 begin
-  if MessageDlg('Are you sure you want to exit',mtConfirmation,[mbYes, mbNo],0) = mrYes then Application.Terminate;
+  if messageDlg('Are you sure you want to exit', mtConfirmation, [mbYes, mbNo],
+    0) = mrYes then
+    Application.Terminate;
 end;
 
 procedure TfrmQuestion2.btnDBDisplayClick(Sender: TObject);
@@ -573,29 +589,32 @@ end;
 procedure TfrmQuestion2.btnDBRestoreClick(Sender: TObject);
 begin
   // PROVIDED CODE - DO NOT MODIFY!
-if MessageDlg('Are you sure you want to restore',mtConfirmation,[mbYes, mbNo],0) = mrYes then BEGIN
-  DM2022.con.Close();
+  if messageDlg('Are you sure you want to restore', mtConfirmation,
+    [mbYes, mbNo], 0) = mrYes then
+  BEGIN
+    DM2022.con.Close();
 
-  DM2022.tblPlayers.Close();
-  DM2022.tblGames.Close();
+    DM2022.tblPlayers.Close();
+    DM2022.tblGames.Close();
 
-  DeleteFile('tournament.mdb');
-  CopyFile('BackupDB.mdb', 'tournament.mdb', False);
+    DeleteFile('tournament.mdb');
+    CopyFile('BackupDB.mdb', 'tournament.mdb', False);
 
-  DM2022.tblPlayers.Open();
+    DM2022.tblPlayers.Open();
 
-  ShowMessage('Database restored!');
-END;
+    showMessage('Database restored!');
+  END;
 end;
 
-
 procedure TfrmQuestion2.btnDeleteClick(Sender: TObject);
-var id : Integer;
+var
+  id: Integer;
 begin
   DM2022.tblPlayers.Last;
   id := DM2022.tblPlayers['ID'];
 
-  while ( id > 1000) do begin
+  while (id > 1000) do
+  begin
     DM2022.tblPlayers.Delete;
     showMessage('Deleted record with ID: ' + IntToStr(id));
 
@@ -603,8 +622,6 @@ begin
     id := DM2022.tblPlayers['ID'];
   end;
 end;
-
 {$ENDREGION}
-
 
 end.

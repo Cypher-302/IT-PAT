@@ -4550,8 +4550,8 @@ object frmRegistration: TfrmRegistration
     Top = 216
     Width = 217
     Height = 24
-    Date = 44823.501372824060000000
-    Time = 44823.501372824060000000
+    Date = 44823.000000000000000000
+    Time = 44823.000000000000000000
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
@@ -4560,29 +4560,30 @@ object frmRegistration: TfrmRegistration
     ParentFont = False
     TabOrder = 6
   end
-  object edtBirth: TDBEdit
-    Left = 439
-    Top = 507
-    Width = 152
-    Height = 24
-    DataField = 'birth'
+  object edtPassword1: TEdit
+    Left = 391
+    Top = 475
+    Width = 217
+    Height = 21
+    BorderStyle = bsNone
+    TabOrder = 7
+    Text = '**********'
+  end
+  object edtPassword: TDBEdit
+    Left = 344
+    Top = 400
+    Width = 217
+    Height = 26
+    BorderStyle = bsNone
+    DataField = 'password'
     DataSource = DM2022.dbsPlayers
-    Enabled = False
     Font.Charset = DEFAULT_CHARSET
     Font.Color = clBlack
     Font.Height = -13
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
-    TabOrder = 7
-  end
-  object edtPassword: TEdit
-    Left = 332
-    Top = 402
-    Width = 217
-    Height = 21
-    BorderStyle = bsNone
+    PasswordChar = '*'
     TabOrder = 8
-    Text = '**********'
   end
 end
