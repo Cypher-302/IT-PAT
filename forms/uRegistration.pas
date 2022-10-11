@@ -17,7 +17,6 @@ type
     edtPhone: TDBEdit;
     edtEmail: TDBEdit;
     dtpBirth: TDateTimePicker;
-    edtPassword1: TEdit;
     imgSignUp: TImage;
     imgLoginLink: TImage;
     edtPassword: TDBEdit;
@@ -32,11 +31,11 @@ type
     function shirtSizeCheck(): Boolean;
     function genderCheck(): Boolean;
     function passwordCheck(password : String): Boolean;
+    function inputValidation(): Boolean;
   private
     { Private declarations }
   public
     { Public declarations }
-    isRegistered : Boolean;
   end;
 
 var
@@ -161,8 +160,6 @@ begin
     True);
   SetWindowRgn(dtpBirth.Handle, CreateRectRgn(2, 2, dtpBirth.Width - 2,
       dtpBirth.Height - 2), True);
-
-  isRegistered := FALSE;
 end;
 
 procedure TfrmRegistration.imgLoginLinkClick(Sender: TObject);
@@ -173,25 +170,32 @@ end;
 procedure TfrmRegistration.imgSignUpClick(Sender: TObject);
 begin
 
+if inputValidation then
+   BEGIN
+    DM2022.tblPlayers['birth'] := DateToStr(dtpBirth.Date);
+    frmHome.isValid := TRUE;
+    MessageDlg('Welcome '+edtFirstName.Text+'!', mtInformation, [mbOk], 0);
+    Self.Close;
+   END
+  else case MessageDlg('An error has occured!', mtWarning, [mbOk,mbAbort], 0) of
+  mrAbort:
+   Application.Terminate;
+  end;
+
+end;
+
+function TfrmRegistration.inputValidation: Boolean;
+begin
   if nameCheck(edtFirstName.Text, edtLastName.Text) AND
   emailCheck(edtEmail.Text) AND
   phoneCheck(edtPhone.Text) AND
   DoBCheck(dtpBirth.Date) AND
   shirtSizeCheck() AND
   genderCheck() AND
-  passwordCheck(edtPassword.Text) then BEGIN
-
-    DM2022.tblPlayers['birth'] := DateToStr(dtpBirth.Date);
-    //isRegistered := True;
-    frmHome.isValid := TRUE;
-    MessageDlg('Welcome '+edtFirstName.Text+'!', mtInformation, [mbOk], 0);
-    Self.Close;
-    END
-  else case MessageDlg('An error has occured!', mtWarning, [mbOk,mbAbort], 0) of
-  mrAbort:
-   Application.Terminate;
-  end;
-
+  passwordCheck(edtPassword.Text) then
+   result := TRUE
+  else
+   result := FALSE;
 end;
 
 end.

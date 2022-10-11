@@ -70,6 +70,18 @@
 			<DCCReference Include="forms\uHome.pas">
 				<Form>frmHome</Form>
 			</DCCReference>
+			<DCCReference Include="forms\uEdit.pas">
+				<Form>frmEdit</Form>
+			</DCCReference>
+			<DCCReference Include="forms\uEditTournament.pas">
+				<Form>frmEditTournament</Form>
+			</DCCReference>
+			<DCCReference Include="forms\uAddTournament.pas">
+				<Form>frmAddTournament</Form>
+			</DCCReference>
+			<DCCReference Include="forms\uForgotPassword.pas">
+				<Form>frmForgotPassword</Form>
+			</DCCReference>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>

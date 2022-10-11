@@ -22,6 +22,7 @@ type
   public
     { Public declarations }
     isValid : Boolean;
+    userEmail : String;
   end;
 
 var

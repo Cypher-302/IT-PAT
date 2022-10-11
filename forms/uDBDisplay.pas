@@ -49,6 +49,7 @@ var
   dbColor: TColor;
 
 implementation
+uses uEdit;
 
 {$R *.dfm}
 
@@ -105,7 +106,7 @@ begin
   try
     selectedDB.Insert;
 
-    frmRegistration.ShowModal;
+    frmEdit.ShowModal;
 
     selectedDB.Post;
   except

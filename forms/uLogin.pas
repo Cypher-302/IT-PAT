@@ -86,6 +86,7 @@ begin
     begin
       messageDlg('Welcome ' + DM2022.tblPlayers['first_name'] + '!',mtInformation, [mbOk], 0);
       frmHome.isValid := TRUE;
+      frmHome.userEmail := DM2022.tblPlayers['email'];
       Self.Close;
       frmRegistration.Close;
     end

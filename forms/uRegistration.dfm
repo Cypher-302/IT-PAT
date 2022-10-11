@@ -3,7 +3,7 @@ object frmRegistration: TfrmRegistration
   Top = 0
   Caption = 'Student Registration'
   ClientHeight = 593
-  ClientWidth = 619
+  ClientWidth = 620
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -4560,15 +4560,6 @@ object frmRegistration: TfrmRegistration
     ParentFont = False
     TabOrder = 6
   end
-  object edtPassword1: TEdit
-    Left = 391
-    Top = 475
-    Width = 217
-    Height = 21
-    BorderStyle = bsNone
-    TabOrder = 7
-    Text = '**********'
-  end
   object edtPassword: TDBEdit
     Left = 344
     Top = 400
@@ -4584,6 +4575,6 @@ object frmRegistration: TfrmRegistration
     Font.Style = []
     ParentFont = False
     PasswordChar = '*'
-    TabOrder = 8
+    TabOrder = 7
   end
 end
