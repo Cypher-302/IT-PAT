@@ -21,9 +21,9 @@ begin
   Application.CreateForm(TfrmHome, frmHome);
   Application.CreateForm(TfrmQuestion2, frmQuestion2);
   Application.CreateForm(TfrmLogin, frmLogin);
+  Application.CreateForm(TfrmDBDisplay, frmDBDisplay);
   Application.CreateForm(TDM2022, DM2022);
   Application.CreateForm(TfrmRegistration, frmRegistration);
-  Application.CreateForm(TfrmDBDisplay, frmDBDisplay);
   Application.CreateForm(TfrmEdit, frmEdit);
   Application.CreateForm(TfrmEditTournament, frmEditTournament);
   Application.CreateForm(TfrmAddTournament, frmAddTournament);

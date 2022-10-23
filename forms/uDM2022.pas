@@ -3,7 +3,7 @@ unit uDM2022;
 interface
 
 uses
-  SysUtils, Classes, DB, ADODB;
+  SysUtils, Classes, DB, ADODB, Dialogs;
 
 type
   TDM2022 = class(TDataModule)
@@ -18,6 +18,8 @@ type
     dbsGenders: TDataSource;
     tblShirtSizes: TADOTable;
     dbsShirtSizes: TDataSource;
+    procedure dbsGamesDataChange(Sender: TObject; Field: TField);
+    procedure dbsPlayersDataChange(Sender: TObject; Field: TField);
   private
     { Private declarations }
   public
@@ -28,7 +30,21 @@ var
   DM2022: TDM2022;
 
 implementation
+uses uDBDisplay;
 
 {$R *.dfm}
+
+procedure TDM2022.dbsGamesDataChange(Sender: TObject; Field: TField);
+begin
+frmDBDisplay.dbgDisplayDrawColumnCell;
+//showMessage('hi Game');
+end;
+
+
+procedure TDM2022.dbsPlayersDataChange(Sender: TObject; Field: TField);
+begin
+frmDBDisplay.dbgDisplayDrawColumnCell;
+//showMessage('hi Player');
+end;
 
 end.

@@ -3507,6 +3507,7 @@ object frmDBDisplay: TfrmDBDisplay
     Width = 633
     Height = 689
     Align = alCustom
+    DataSource = DM2022.dbsPlayers
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     PopupMenu = popupDBGrids
     TabOrder = 0
@@ -3515,6 +3516,53 @@ object frmDBDisplay: TfrmDBDisplay
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    OnDrawColumnCell = dbgDisplayDrawColumnCell
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ID'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'shirt_size'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'gender'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'birth'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'phone'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'last_name'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'first_name'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'email'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'password'
+        Visible = True
+      end>
   end
   object btnFirst: TButton
     Left = 942

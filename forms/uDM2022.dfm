@@ -24,11 +24,13 @@ object DM2022: TDM2022
   end
   object dbsPlayers: TDataSource
     DataSet = tblPlayers
+    OnDataChange = dbsPlayersDataChange
     Left = 216
     Top = 24
   end
   object dbsGames: TDataSource
     DataSet = tblGames
+    OnDataChange = dbsGamesDataChange
     Left = 216
     Top = 88
   end
