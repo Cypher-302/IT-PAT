@@ -3,7 +3,7 @@ object frmQuestion2: TfrmQuestion2
   Top = 0
   BorderStyle = bsSingle
   Caption = '2022 - Grade 11 INFT Sample PAT Template'
-  ClientHeight = 655
+  ClientHeight = 695
   ClientWidth = 950
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -3151,18 +3151,20 @@ object frmQuestion2: TfrmQuestion2
     Left = 0
     Top = 38
     Width = 950
-    Height = 617
+    Height = 657
     ActivePage = tbsQ1_1
     Align = alClient
     TabOrder = 0
+    ExplicitHeight = 617
     object tbsQ1_1: TTabSheet
       Caption = 'Students'
       ImageIndex = 3
+      ExplicitHeight = 579
       object Image1: TImage
         Left = 0
         Top = 0
         Width = 942
-        Height = 579
+        Height = 619
         Align = alClient
         Picture.Data = {
           0A544A504547496D616765ADA30200FFD8FFE000104A46494600010101004800
@@ -8783,9 +8785,10 @@ object frmQuestion2: TfrmQuestion2
     object tbsQ2_1: TTabSheet
       Caption = 'Registration'
       ImageIndex = 1
+      ExplicitHeight = 599
       object gbRegistration: TGroupBox
         Left = 0
-        Top = 452
+        Top = 492
         Width = 942
         Height = 127
         Align = alBottom
@@ -8794,6 +8797,7 @@ object frmQuestion2: TfrmQuestion2
         ParentBackground = False
         ParentColor = False
         TabOrder = 0
+        ExplicitTop = 472
         object Label1: TLabel
           Left = 25
           Top = 34
@@ -9106,10 +9110,11 @@ object frmQuestion2: TfrmQuestion2
         Left = 0
         Top = 0
         Width = 942
-        Height = 452
+        Height = 492
         Align = alClient
         Caption = 'Database Contents'
         TabOrder = 1
+        ExplicitHeight = 472
         object GroupBox3: TGroupBox
           Left = 2
           Top = 25
@@ -9157,15 +9162,16 @@ object frmQuestion2: TfrmQuestion2
           Left = 2
           Top = 249
           Width = 938
-          Height = 201
+          Height = 241
           Align = alClient
           Caption = 'Games'
           TabOrder = 1
+          ExplicitHeight = 221
           object dbgGames: TDBGrid
             Left = 2
             Top = 25
             Width = 934
-            Height = 149
+            Height = 189
             Align = alClient
             DataSource = DM2022.dbsGames
             Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
@@ -9178,26 +9184,29 @@ object frmQuestion2: TfrmQuestion2
           end
           object DBNavigator2: TDBNavigator
             Left = 2
-            Top = 174
+            Top = 214
             Width = 934
             Height = 25
             DataSource = DM2022.dbsGames
             Align = alBottom
             TabOrder = 1
+            ExplicitTop = 194
           end
         end
       end
     end
     object tbsQ2_2: TTabSheet
       Caption = 'Searchs and Queries'
+      ExplicitHeight = 599
       object gbQueries: TGroupBox
         Left = 464
         Top = 0
         Width = 478
-        Height = 579
+        Height = 619
         Align = alRight
         Caption = 'SQL Editor'
         TabOrder = 0
+        ExplicitHeight = 599
         object Label4: TLabel
           Left = 2
           Top = 25
@@ -9217,7 +9226,7 @@ object frmQuestion2: TfrmQuestion2
           Left = 2
           Top = 201
           Width = 474
-          Height = 376
+          Height = 416
           Align = alClient
           Font.Charset = ANSI_CHARSET
           Font.Color = clBlack
@@ -9229,6 +9238,7 @@ object frmQuestion2: TfrmQuestion2
           ParentFont = False
           ScrollBars = ssVertical
           TabOrder = 0
+          ExplicitHeight = 396
         end
         object redSQL: TRichEdit
           Left = 2
@@ -9262,7 +9272,7 @@ object frmQuestion2: TfrmQuestion2
         Left = 0
         Top = 0
         Width = 464
-        Height = 579
+        Height = 619
         Align = alClient
         Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
         TabOrder = 1
@@ -9276,6 +9286,7 @@ object frmQuestion2: TfrmQuestion2
     object tbsQ2_3: TTabSheet
       Caption = 'Reports'
       ImageIndex = 2
+      ExplicitHeight = 599
       object Image2: TImage
         Left = 400
         Top = 280
@@ -9286,15 +9297,12 @@ object frmQuestion2: TfrmQuestion2
         Left = 0
         Top = 0
         Width = 942
-        Height = 512
+        Height = 552
         Align = alClient
         TabOrder = 0
-        ExplicitLeft = 56
-        ExplicitTop = 136
-        ExplicitWidth = 300
-        ExplicitHeight = 150
+        ExplicitHeight = 512
         ControlData = {
-          4C0000005C610000EB3400000000000000000000000000000000000000000000
+          4C0000005C6100000D3900000000000000000000000000000000000000000000
           000000004C000000000000000000000001000000E0D057007335CF11AE690800
           2B2E12620A000000000000004C0000000114020000000000C000000000000046
           8000000000000000000000000000000000000000000000000000000000000000
@@ -9302,7 +9310,7 @@ object frmQuestion2: TfrmQuestion2
       end
       object gbReports: TGroupBox
         Left = 0
-        Top = 512
+        Top = 552
         Width = 942
         Height = 67
         Align = alBottom
@@ -9311,6 +9319,7 @@ object frmQuestion2: TfrmQuestion2
         ParentBackground = False
         ParentColor = False
         TabOrder = 1
+        ExplicitTop = 532
         object Button2: TButton
           Left = 708
           Top = 25
@@ -9510,7 +9519,7 @@ object frmQuestion2: TfrmQuestion2
     Left = 888
     Top = 336
     Bitmap = {
-      494C010104000800840020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800880020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

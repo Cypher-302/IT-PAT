@@ -3571,7 +3571,6 @@ object frmDBDisplay: TfrmDBDisplay
     Height = 25
     Caption = 'Delete all records after 1000'
     TabOrder = 6
-    OnClick = btnDelete1000Click
   end
   object popupDBGrids: TPopupMenu
     Left = 1072

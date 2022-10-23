@@ -30,7 +30,7 @@ var
 
 implementation
 
-uses uRegistration, uHome;
+uses uRegistration, uHome, uForgotPassword;
 {$R *.dfm}
 
 procedure TfrmLogin.chkAdminClick(Sender: TObject);
@@ -65,8 +65,6 @@ begin
 end;
 
 procedure TfrmLogin.imgbtnLoginClick(Sender: TObject);
-var
-  DBPass: String;
 begin
   if (isAdminSlc = TRUE) AND (edtPassword.Text = 'admin') then
   begin
@@ -81,8 +79,7 @@ begin
 
   if not(isAdminSlc) AND (DM2022.tblPlayers.Locate('email', edtEmail.Text,[]) = TRUE) then
   BEGIN
-    DBPass := edtPassword.Text;
-    if (DM2022.tblPlayers.Locate('password', DBPass, []) = TRUE) then
+    if (DM2022.tblPlayers.Locate('password', edtPassword.Text, []) = TRUE) then
     begin
       messageDlg('Welcome ' + DM2022.tblPlayers['first_name'] + '!',mtInformation, [mbOk], 0);
       frmHome.isValid := TRUE;
@@ -90,8 +87,12 @@ begin
       Self.Close;
       frmRegistration.Close;
     end
-    else
+    else begin
       messageDlg('Password is incorrect!',mtWarning,[mbOk],0);
+      case messageDlg('Do you want to reset your password?',mtInformation,[mbYes,mbNo],0) of
+      mrYes: frmForgotPassword.showModal;
+      end;
+    end;
   END
   else if not(isAdminSlc) AND (DM2022.tblPlayers.Locate('email',edtEmail.Text, []) = FALSE) then
     messageDlg('Email was not found!',mtWarning,[mbOk],0);
