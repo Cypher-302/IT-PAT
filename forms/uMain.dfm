@@ -3152,14 +3152,12 @@ object frmQuestion2: TfrmQuestion2
     Top = 38
     Width = 950
     Height = 657
-    ActivePage = tbsQ1_1
+    ActivePage = tbsQ2_2
     Align = alClient
     TabOrder = 0
-    ExplicitHeight = 617
     object tbsQ1_1: TTabSheet
       Caption = 'Students'
       ImageIndex = 3
-      ExplicitHeight = 579
       object Image1: TImage
         Left = 0
         Top = 0
@@ -8785,7 +8783,6 @@ object frmQuestion2: TfrmQuestion2
     object tbsQ2_1: TTabSheet
       Caption = 'Registration'
       ImageIndex = 1
-      ExplicitHeight = 599
       object gbRegistration: TGroupBox
         Left = 0
         Top = 492
@@ -8797,7 +8794,6 @@ object frmQuestion2: TfrmQuestion2
         ParentBackground = False
         ParentColor = False
         TabOrder = 0
-        ExplicitTop = 472
         object Label1: TLabel
           Left = 25
           Top = 34
@@ -9114,7 +9110,6 @@ object frmQuestion2: TfrmQuestion2
         Align = alClient
         Caption = 'Database Contents'
         TabOrder = 1
-        ExplicitHeight = 472
         object GroupBox3: TGroupBox
           Left = 2
           Top = 25
@@ -9166,7 +9161,6 @@ object frmQuestion2: TfrmQuestion2
           Align = alClient
           Caption = 'Games'
           TabOrder = 1
-          ExplicitHeight = 221
           object dbgGames: TDBGrid
             Left = 2
             Top = 25
@@ -9190,14 +9184,12 @@ object frmQuestion2: TfrmQuestion2
             DataSource = DM2022.dbsGames
             Align = alBottom
             TabOrder = 1
-            ExplicitTop = 194
           end
         end
       end
     end
     object tbsQ2_2: TTabSheet
       Caption = 'Searchs and Queries'
-      ExplicitHeight = 599
       object gbQueries: TGroupBox
         Left = 464
         Top = 0
@@ -9206,7 +9198,6 @@ object frmQuestion2: TfrmQuestion2
         Align = alRight
         Caption = 'SQL Editor'
         TabOrder = 0
-        ExplicitHeight = 599
         object Label4: TLabel
           Left = 2
           Top = 25
@@ -9238,7 +9229,6 @@ object frmQuestion2: TfrmQuestion2
           ParentFont = False
           ScrollBars = ssVertical
           TabOrder = 0
-          ExplicitHeight = 396
         end
         object redSQL: TRichEdit
           Left = 2
@@ -9286,7 +9276,6 @@ object frmQuestion2: TfrmQuestion2
     object tbsQ2_3: TTabSheet
       Caption = 'Reports'
       ImageIndex = 2
-      ExplicitHeight = 599
       object Image2: TImage
         Left = 400
         Top = 280
@@ -9319,7 +9308,6 @@ object frmQuestion2: TfrmQuestion2
         ParentBackground = False
         ParentColor = False
         TabOrder = 1
-        ExplicitTop = 532
         object Button2: TButton
           Left = 708
           Top = 25
@@ -9519,7 +9507,7 @@ object frmQuestion2: TfrmQuestion2
     Left = 888
     Top = 336
     Bitmap = {
-      494C010104000800880020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C0101040008008C0020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000

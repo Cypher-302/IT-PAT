@@ -220,7 +220,7 @@ end;
 procedure TfrmQuestion2.Tabs;
 begin
 
-  // dbgSQL.Columns[0].Width := 150;
+   //dbgSQL.Columns[0].Width := 150;
   // dbgSQL.Columns[1].Width := 150;
 
 end;

@@ -20,7 +20,9 @@ type
     clkInsert: TMenuItem;
     clkEdit: TMenuItem;
     clkDelete: TMenuItem;
-    btnDelete1000: TButton;
+    btnFilter: TButton;
+    btnSort: TButton;
+    btnSearch: TButton;
     procedure FormActivate(Sender: TObject);
     procedure rdDisplayClick(Sender: TObject);
     procedure btnNextClick(Sender: TObject);
@@ -35,8 +37,12 @@ type
     procedure FitGrid(Grid: TDBGrid);
     procedure refresh();
     procedure btnDelete1000Click(Sender: TObject);
+    procedure ButtonGroup1Items0Click(Sender: TObject);
+    procedure runSQL(sSQL: String);
+    procedure Tabs;
   private
     { Private declarations }
+    sSQL : String;
   public
     { Public declarations }
   end;
@@ -45,13 +51,35 @@ var
   frmDBDisplay: TfrmDBDisplay;
 
   selectedDB: TADOTable;
-
   dbColor: TColor;
+  columnsAMT: Integer;
 
 implementation
 uses uEdit;
 
 {$R *.dfm}
+ //   sSQL := '';       self.runSQL(sSQL);
+procedure TfrmDBDisplay.runSQL(sSQL: String);
+begin
+  DM2022.qry.SQL.Clear;
+  DM2022.qry.SQL.ADD(sSQL);
+  DM2022.qry.Open;
+  Tabs();
+end;
+
+procedure TfrmDBDisplay.Tabs;
+var iLoop : Integer;
+begin
+  DM2022.qry.First;
+  selectedDB.First;
+  for iLoop := 0 to columnsAMT do begin                //need to figure out how to replace each row in dbgDisplay with
+      dbgDisplay.Columns[iLoop]                        //the corresponding row of sSQL and get rid of the rest
+                                                       //really don't wanna check if they match tho -too resource intensive
+  end;
+   //dbgSQL.Columns[0].Width := 150;
+  // dbgSQL.Columns[1].Width := 150;
+
+end;
 
 procedure TfrmDBDisplay.btnFirstClick(Sender: TObject);
 begin
@@ -72,6 +100,8 @@ procedure TfrmDBDisplay.btnPriorClick(Sender: TObject);
 begin
   selectedDB.Prior;
 end;
+
+
 
 procedure TfrmDBDisplay.btnDelete1000Click(Sender: TObject);
 var
@@ -210,7 +240,7 @@ end;
 end;}
 
 procedure TfrmDBDisplay.updateCol();
-var iLoop, colWidth, columnsAMT : Integer;
+var iLoop, colWidth : Integer;
 begin
   colWidth := 0;
 

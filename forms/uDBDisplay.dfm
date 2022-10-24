@@ -3507,6 +3507,7 @@ object frmDBDisplay: TfrmDBDisplay
     Width = 633
     Height = 689
     Align = alCustom
+    DataSource = DM2022.dbsPlayers
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     PopupMenu = popupDBGrids
     TabOrder = 0
@@ -3515,6 +3516,52 @@ object frmDBDisplay: TfrmDBDisplay
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
+    Columns = <
+      item
+        Expanded = False
+        FieldName = 'ID'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'shirt_size'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'gender'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'birth'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'phone'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'last_name'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'first_name'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'email'
+        Visible = True
+      end
+      item
+        Expanded = False
+        FieldName = 'password'
+        Visible = True
+      end>
   end
   object btnFirst: TButton
     Left = 942
@@ -3564,13 +3611,29 @@ object frmDBDisplay: TfrmDBDisplay
     TabOrder = 5
     OnClick = rdDisplayClick
   end
-  object btnDelete1000: TButton
-    Left = 942
-    Top = 328
-    Width = 172
+  object btnFilter: TButton
+    Left = 953
+    Top = 344
+    Width = 75
     Height = 25
-    Caption = 'Delete all records after 1000'
+    Caption = 'Filter'
     TabOrder = 6
+  end
+  object btnSort: TButton
+    Left = 953
+    Top = 391
+    Width = 75
+    Height = 25
+    Caption = 'Sort'
+    TabOrder = 7
+  end
+  object btnSearch: TButton
+    Left = 953
+    Top = 438
+    Width = 75
+    Height = 25
+    Caption = 'Search'
+    TabOrder = 8
   end
   object popupDBGrids: TPopupMenu
     Left = 1072
