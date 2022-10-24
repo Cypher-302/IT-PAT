@@ -35,13 +35,10 @@ type
     procedure FitGrid(Grid: TDBGrid);
     procedure refresh();
     procedure btnDelete1000Click(Sender: TObject);
-
   private
     { Private declarations }
   public
-  procedure dbgDisplayDrawColumnCell(Sender: TObject; const Rect: TRect;
-      DataCol: Integer; Column: TColumn; State: TGridDrawState);
-  var slcColor : TColor;
+    { Public declarations }
   end;
 
 var
@@ -128,25 +125,6 @@ begin
   end;
 end;
 
-procedure TfrmDBDisplay.dbgDisplayDrawColumnCell(Sender: TObject;
-  const Rect: TRect; DataCol: Integer; Column: TColumn; State: TGridDrawState);
-var iLoop : Integer;
-begin
-if self.Enabled = TRUE then begin
-
-updateCol;
-for iLoop := 0 to dbgDisplay.Columns.Count - 1 do
-  begin
-    with dbgDisplay do
-    with Canvas do
-    begin
-      Brush.Color := slcColor;
-    end;
-  end;
-dbgDisplay.DefaultDrawColumnCell(Rect, DataCol, Column, State);
-end;
-end;
-
 function HexToTColor(sColor: string): TColor;
 begin
   Result := RGB(StrToInt('$' + Copy(sColor, 1, 2)),
@@ -204,21 +182,9 @@ procedure TfrmDBDisplay.FormActivate(Sender: TObject);
 begin
 
   dbColor := HexToTColor('B6D6CC');
-  slcColor := HexToTColor('9584FF');
   refresh();
 
 end;
-
-{
-procedure TForm1.DBGrid1DrawColumnCell
- (Sender: TObject; const Rect: TRect;
- DataCol: Integer; Column: TColumn;
- State: TGridDrawState);
-begin
-if Table1.FieldByName('Salary').AsCurrency>36000 then DBGrid1.Canvas.Brush.Color:=clWhite;
-DBGrid1.DefaultDrawColumnCell(Rect, DataCol, Column, State);
-end;
-}
 
 {procedure TfrmDBDisplay.QuickSort(var A: array of Integer; iLo, iHi: Integer);
  var
@@ -295,7 +261,7 @@ begin
   updateCol();
   {rdDisplay.ItemIndex := 1;
   FitGrid(dbgDisplay);}
-  //showmessage('Refreshed!');
+  showmessage('Refreshed!');
 end;
 
 end.

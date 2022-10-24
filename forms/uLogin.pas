@@ -4,7 +4,7 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, pngimage, ExtCtrls, StdCtrls, Mask, DBCtrls;
+  Dialogs, pngimage, ExtCtrls, StdCtrls, Mask, DBCtrls, uDM2022;
 
 type
   TfrmLogin = class(TForm)
@@ -30,7 +30,7 @@ var
 
 implementation
 
-uses uRegistration, uHome, uForgotPassword, uDM2022;
+uses uRegistration, uHome, uForgotPassword;
 {$R *.dfm}
 
 procedure TfrmLogin.chkAdminClick(Sender: TObject);
