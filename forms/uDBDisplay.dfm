@@ -3516,52 +3516,6 @@ object frmDBDisplay: TfrmDBDisplay
     TitleFont.Height = -11
     TitleFont.Name = 'Tahoma'
     TitleFont.Style = []
-    Columns = <
-      item
-        Expanded = False
-        FieldName = 'ID'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'shirt_size'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'gender'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'birth'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'phone'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'last_name'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'first_name'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'email'
-        Visible = True
-      end
-      item
-        Expanded = False
-        FieldName = 'password'
-        Visible = True
-      end>
   end
   object btnFirst: TButton
     Left = 942
@@ -3611,21 +3565,13 @@ object frmDBDisplay: TfrmDBDisplay
     TabOrder = 5
     OnClick = rdDisplayClick
   end
-  object btnFilter: TButton
-    Left = 953
-    Top = 344
-    Width = 75
-    Height = 25
-    Caption = 'Filter'
-    TabOrder = 6
-  end
   object btnSort: TButton
     Left = 953
-    Top = 391
+    Top = 407
     Width = 75
     Height = 25
     Caption = 'Sort'
-    TabOrder = 7
+    TabOrder = 6
   end
   object btnSearch: TButton
     Left = 953
@@ -3633,7 +3579,29 @@ object frmDBDisplay: TfrmDBDisplay
     Width = 75
     Height = 25
     Caption = 'Search'
+    TabOrder = 7
+    OnClick = btnSearchClick
+  end
+  object cmbFilter: TComboBox
+    Left = 942
+    Top = 336
+    Width = 172
+    Height = 21
     TabOrder = 8
+    Text = 'Filter'
+    OnChange = cmbFilterChange
+    Items.Strings = (
+      'test'
+      'test2')
+  end
+  object btnRefresh: TButton
+    Left = 942
+    Top = 376
+    Width = 172
+    Height = 25
+    Caption = 'Refresh'
+    TabOrder = 9
+    OnClick = btnRefreshClick
   end
   object popupDBGrids: TPopupMenu
     Left = 1072

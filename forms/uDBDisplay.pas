@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   DBGrids, pngimage, ExtCtrls, StdCtrls, Grids, jpeg, CheckLst, Dialogs,
-  uDM2022, uLogin, Menus, uRegistration, DB, ADODB;
+  uDM2022, uLogin, Menus, uRegistration, DB, ADODB, DBCtrls;
 
 type
   TfrmDBDisplay = class(TForm)
@@ -20,9 +20,10 @@ type
     clkInsert: TMenuItem;
     clkEdit: TMenuItem;
     clkDelete: TMenuItem;
-    btnFilter: TButton;
     btnSort: TButton;
     btnSearch: TButton;
+    cmbFilter: TComboBox;
+    btnRefresh: TButton;
     procedure FormActivate(Sender: TObject);
     procedure rdDisplayClick(Sender: TObject);
     procedure btnNextClick(Sender: TObject);
@@ -35,11 +36,13 @@ type
     procedure updateCol();
 //    procedure QuickSort(var A: array of Integer; iLo, iHi: Integer);
     procedure FitGrid(Grid: TDBGrid);
-    procedure refresh();
+    procedure refresh(dbgDS: TDataSource);
     procedure btnDelete1000Click(Sender: TObject);
-    procedure ButtonGroup1Items0Click(Sender: TObject);
     procedure runSQL(sSQL: String);
     procedure Tabs;
+    procedure btnSearchClick(Sender: TObject);
+    procedure cmbFilterChange(Sender: TObject);
+    procedure btnRefreshClick(Sender: TObject);
   private
     { Private declarations }
     sSQL : String;
@@ -49,7 +52,7 @@ type
 
 var
   frmDBDisplay: TfrmDBDisplay;
-
+  DataSrc : TDataSource;
   selectedDB: TADOTable;
   dbColor: TColor;
   columnsAMT: Integer;
@@ -68,22 +71,17 @@ begin
 end;
 
 procedure TfrmDBDisplay.Tabs;
-var iLoop : Integer;
 begin
-  DM2022.qry.First;
-  selectedDB.First;
-  for iLoop := 0 to columnsAMT do begin                //need to figure out how to replace each row in dbgDisplay with
-      dbgDisplay.Columns[iLoop]                        //the corresponding row of sSQL and get rid of the rest
-                                                       //really don't wanna check if they match tho -too resource intensive
-  end;
-   //dbgSQL.Columns[0].Width := 150;
-  // dbgSQL.Columns[1].Width := 150;
-
+  DataSrc := TDataSource.Create(Self);
+  DataSrc.DataSet := DM2022.qry;
+  DataSrc.Enabled := TRUE;
+  //dbgDisplay.DataSource := DataSrc;
+  refresh(DataSrc);
 end;
 
 procedure TfrmDBDisplay.btnFirstClick(Sender: TObject);
 begin
-  selectedDB.First;
+  selectedDB.First;                                   //don't think that this will end up moving it on the DataSrc display
 end;
 
 procedure TfrmDBDisplay.btnLastClick(Sender: TObject);
@@ -101,7 +99,35 @@ begin
   selectedDB.Prior;
 end;
 
+procedure TfrmDBDisplay.btnRefreshClick(Sender: TObject);
+begin
+rdDisplayClick(rdDisplay);
+end;
 
+procedure TfrmDBDisplay.btnSearchClick(Sender: TObject);
+var sFind : String;
+begin
+  sFind := QuotedStr(InputBox('First name','Enter search below: ','Babita'));
+  sSQL := 'SELECT * FROM players WHERE first_name LIKE '+sFind;
+  self.runSQL(sSQL);
+end;
+
+procedure TfrmDBDisplay.cmbFilterChange(Sender: TObject);
+var sFind, sField, sTable : String;
+begin
+  sField := cmbFilter.Items[cmbFilter.ItemIndex];
+  sFind := QuotedStr(InputBox('Filter','Enter filter item for: '+sField,''));
+
+  {if dbgDisplay.DataSource = DM2022.dbsPlayers then showMessage('players')
+   else if dbgDisplay.DataSource = DM2022.dbsGames then showmessage('games')
+    else showmessage('dunno');
+   }
+  if selectedDB = DM2022.tblGames then sTable := 'games'
+  else sTable := 'players';
+
+  sSQL := 'SELECT * FROM '+sTable+' WHERE '+sField+' LIKE '+sFind;
+  self.runSQL(sSQL);
+end;
 
 procedure TfrmDBDisplay.btnDelete1000Click(Sender: TObject);
 var
@@ -212,7 +238,7 @@ procedure TfrmDBDisplay.FormActivate(Sender: TObject);
 begin
 
   dbColor := HexToTColor('B6D6CC');
-  refresh();
+  refresh(DM2022.dbsPlayers);
 
 end;
 
@@ -244,30 +270,35 @@ var iLoop, colWidth : Integer;
 begin
   colWidth := 0;
 
+ // if dbgDisplay.DataSource = DataSrc then rdDis //don't want this to activate when still showing the SQL result
+
+
   if dbgDisplay.DataSource = DM2022.dbsPlayers then
     begin
       selectedDB := DM2022.tblPlayers;
       columnsAMT := dbgDisplay.Columns.Count - 1;
-      dbgDisplay.Columns[columnsAMT].Visible := FALSE;
     end
   else if dbgDisplay.DataSource = DM2022.dbsGames then
     begin
     selectedDB := DM2022.tblGames;
     columnsAMT := dbgDisplay.Columns.Count - 1;
-    end;
+    end
+  else selectedDB := Datasrc
+  if columnsAMT = 8 then dbgDisplay.Columns[columnsAMT].Visible := FALSE;
 
-  for iLoop := 0 to columnsAMT do
+
+  cmbFilter.Items.Clear;
+  for iLoop := 0 to columnsAMT do BEGIN
     dbgDisplay.Columns[iLoop].Color := dbColor;
-
-  for iLoop := 0 to columnsAMT do
     colWidth := colWidth + dbgDisplay.Columns[iLoop].Width;
+    if not(dbgDisplay.Columns[iLoop].Field.FieldName = 'password') then
+     cmbFilter.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
+  END;
 
   dbgDisplay.Width := colWidth + 38;
 end;
 
 procedure TfrmDBDisplay.rdDisplayClick(Sender: TObject);
-var
-  columnsAMT, iLoop: Integer;
 begin
 
   if (rdDisplay.ItemIndex = 0) then
@@ -284,14 +315,12 @@ begin
 
 end;
 
-procedure TfrmDBDisplay.refresh;
+procedure TfrmDBDisplay.refresh(dbgDS : TDataSource);
 begin
-  rdDisplay.ItemIndex := 0;
+  dbgDisplay.DataSource := dbgDS;
   FitGrid(dbgDisplay);
   updateCol();
-  {rdDisplay.ItemIndex := 1;
-  FitGrid(dbgDisplay);}
-  showmessage('Refreshed!');
+//  showmessage('Refreshed!');
 end;
 
 end.

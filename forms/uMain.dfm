@@ -3152,12 +3152,16 @@ object frmQuestion2: TfrmQuestion2
     Top = 38
     Width = 950
     Height = 657
-    ActivePage = tbsQ2_2
+    ActivePage = tbsQ2_1
     Align = alClient
     TabOrder = 0
     object tbsQ1_1: TTabSheet
       Caption = 'Students'
       ImageIndex = 3
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Image1: TImage
         Left = 0
         Top = 0
@@ -9276,6 +9280,10 @@ object frmQuestion2: TfrmQuestion2
     object tbsQ2_3: TTabSheet
       Caption = 'Reports'
       ImageIndex = 2
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Image2: TImage
         Left = 400
         Top = 280
@@ -9507,7 +9515,7 @@ object frmQuestion2: TfrmQuestion2
     Left = 888
     Top = 336
     Bitmap = {
-      494C0101040008008C0020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010104000800900020002000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000800000004000000001002000000000000080
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
