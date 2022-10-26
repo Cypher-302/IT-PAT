@@ -48,8 +48,8 @@ object DM2022: TDM2022
   end
   object dbsSQL: TDataSource
     DataSet = qry
-    Left = 384
-    Top = 24
+    Left = 360
+    Top = 32
   end
   object tblGenders: TADOTable
     Active = True

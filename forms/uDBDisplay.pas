@@ -34,7 +34,6 @@ type
     procedure clkEditClick(Sender: TObject);
     procedure clkDeleteClick(Sender: TObject);
     procedure updateCol();
-//    procedure QuickSort(var A: array of Integer; iLo, iHi: Integer);
     procedure FitGrid(Grid: TDBGrid);
     procedure refresh(dbgDS: TDataSource);
     procedure btnDelete1000Click(Sender: TObject);
@@ -52,7 +51,7 @@ type
 
 var
   frmDBDisplay: TfrmDBDisplay;
-  DataSrc : TDataSource;
+//  DataSrc : TDataSource;
   selectedDB: TADOTable;
   dbColor: TColor;
   columnsAMT: Integer;
@@ -72,11 +71,11 @@ end;
 
 procedure TfrmDBDisplay.Tabs;
 begin
-  DataSrc := TDataSource.Create(Self);
+{  DataSrc := TDataSource.Create(Self);
   DataSrc.DataSet := DM2022.qry;
-  DataSrc.Enabled := TRUE;
+  DataSrc.Enabled := TRUE;}
   //dbgDisplay.DataSource := DataSrc;
-  refresh(DataSrc);
+  refresh(DM2022.dbsSQL);
 end;
 
 procedure TfrmDBDisplay.btnFirstClick(Sender: TObject);
@@ -118,10 +117,6 @@ begin
   sField := cmbFilter.Items[cmbFilter.ItemIndex];
   sFind := QuotedStr(InputBox('Filter','Enter filter item for: '+sField,''));
 
-  {if dbgDisplay.DataSource = DM2022.dbsPlayers then showMessage('players')
-   else if dbgDisplay.DataSource = DM2022.dbsGames then showmessage('games')
-    else showmessage('dunno');
-   }
   if selectedDB = DM2022.tblGames then sTable := 'games'
   else sTable := 'players';
 
@@ -242,29 +237,6 @@ begin
 
 end;
 
-{procedure TfrmDBDisplay.QuickSort(var A: array of Integer; iLo, iHi: Integer);
- var
-   Lo, Hi, Pivot, T: Integer;
- begin
-   Lo := iLo;
-   Hi := iHi;
-   Pivot := A[(Lo + Hi) div 2];
-   repeat
-     while A[Lo] < Pivot do Inc(Lo);
-     while A[Hi] > Pivot do Dec(Hi);
-     if Lo <= Hi then
-     begin
-       T := A[Lo];
-       A[Lo] := A[Hi];
-       A[Hi] := T;
-       Inc(Lo);
-       Dec(Hi);
-     end;
-   until Lo > Hi;
-   if Hi > iLo then QuickSort(A, iLo, Hi);
-   if Lo < iHi then QuickSort(A, Lo, iHi);
-end;}
-
 procedure TfrmDBDisplay.updateCol();
 var iLoop, colWidth : Integer;
 begin
@@ -282,8 +254,8 @@ begin
     begin
     selectedDB := DM2022.tblGames;
     columnsAMT := dbgDisplay.Columns.Count - 1;
-    end
-  else selectedDB := Datasrc
+    end;
+  //se selectedDB := Datasrc;
   if columnsAMT = 8 then dbgDisplay.Columns[columnsAMT].Visible := FALSE;
 
 

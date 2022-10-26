@@ -3507,7 +3507,6 @@ object frmDBDisplay: TfrmDBDisplay
     Width = 633
     Height = 689
     Align = alCustom
-    DataSource = DM2022.dbsPlayers
     Options = [dgTitles, dgIndicator, dgColumnResize, dgColLines, dgRowLines, dgTabs, dgRowSelect, dgConfirmDelete, dgCancelOnExit, dgTitleClick, dgTitleHotTrack]
     PopupMenu = popupDBGrids
     TabOrder = 0
