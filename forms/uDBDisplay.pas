@@ -24,6 +24,9 @@ type
     btnSearch: TButton;
     cmbFilter: TComboBox;
     btnRefresh: TButton;
+    btnPodium: TImage;
+    Button2: TButton;
+    Button1: TButton;
     procedure FormActivate(Sender: TObject);
     procedure rdDisplayClick(Sender: TObject);
     procedure btnNextClick(Sender: TObject);
@@ -37,16 +40,19 @@ type
     procedure FitGrid(Grid: TDBGrid);
     procedure refresh(dbgDS: TDataSource);
     procedure btnDelete1000Click(Sender: TObject);
-    procedure runSQL(sSQL: String);
-    procedure Tabs;
     procedure btnSearchClick(Sender: TObject);
     procedure cmbFilterChange(Sender: TObject);
     procedure btnRefreshClick(Sender: TObject);
+    procedure btnPodiumClick(Sender: TObject);
+    procedure Button2Click(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
-    sSQL : String;
   public
     { Public declarations }
+    sSQL : String;
+    procedure runSQL(sSQL: String);
+    procedure Tabs;
   end;
 
 var
@@ -66,6 +72,7 @@ begin
   DM2022.qry.SQL.Clear;
   DM2022.qry.SQL.ADD(sSQL);
   DM2022.qry.Open;
+  showMessage('ran sql');
   Tabs();
 end;
 
@@ -93,6 +100,56 @@ begin
   selectedDB.Next;
 end;
 
+procedure TfrmDBDisplay.btnPodiumClick(Sender: TObject);
+var winner_score: Array of Integer;
+    winner_name : Array of String;
+    iLoop, iLoop2       : Integer;
+    len, iTemp: Integer;
+    sTemp : String;
+begin
+iLoop := 1;
+
+while not DM2022.tblGames.Eof do with DM2022 do
+ if tblGames.Locate ('id',iLoop,[]) = TRUE then
+ BEGIN
+  tblGames.Edit;
+   if tblGames['winner'] = null then
+   if tblGames['player1_score'] > tblGames['player2_score']
+    THEN tblGames['winner'] := 'player1_id'
+    ELSE
+     if tblGames['player1_score'] < tblGames['player2_score']
+      then tblGames['winner'] := 'player2_id'
+      else tblGames['winner'] := 'Draw';
+  tblGames.Post;
+  tblGames.Next;
+  INC(iLoop);
+ END
+ else INC(iLoop);
+
+
+ with frmDBDisplay do begin
+
+   sSQL := 'SELECT TOP 3 *' +
+           ' FROM (SELECT players.ID,players.first_name, players.last_name, Count(games.winner) AS Wins' +
+           ' FROM players' +
+           ' INNER JOIN games ON players.ID = games.player1_id' +
+           ' WHERE ((games.[winner]) LIKE "player1_id")' +
+           ' GROUP BY players.ID,players.first_name, players.last_name' +
+           ' UNION' +
+           ' SELECT players.ID,players.first_name, players.last_name, Count(games.winner) AS Wins' +
+           ' FROM players' +
+           ' INNER JOIN games ON players.ID = games.player2_id' +
+           ' WHERE ((games.[winner]) LIKE "player2_id")' +
+           ' GROUP BY players.ID,players.first_name, players.last_name' +
+           ' ORDER BY Wins DESC)  AS T;';
+   runSQL(sSQL);
+
+ end;
+
+ showmessage('ran');
+
+end;
+
 procedure TfrmDBDisplay.btnPriorClick(Sender: TObject);
 begin
   selectedDB.Prior;
@@ -109,6 +166,20 @@ begin
   sFind := QuotedStr(InputBox('First name','Enter search below: ','Babita'));
   sSQL := 'SELECT * FROM players WHERE first_name LIKE '+sFind;
   self.runSQL(sSQL);
+end;
+
+procedure TfrmDBDisplay.Button1Click(Sender: TObject);
+begin
+btnPodiumClick(Sender);
+end;
+
+procedure TfrmDBDisplay.Button2Click(Sender: TObject);
+var tf: TextFile;
+begin
+  AssignFile(tf, '.\reports\report2.txt');
+  ReWrite(tf);
+ // while not  do
+
 end;
 
 procedure TfrmDBDisplay.cmbFilterChange(Sender: TObject);
@@ -240,33 +311,24 @@ end;
 procedure TfrmDBDisplay.updateCol();
 var iLoop, colWidth : Integer;
 begin
-  colWidth := 0;
 
- // if dbgDisplay.DataSource = DataSrc then rdDis //don't want this to activate when still showing the SQL result
+  if dbgDisplay.DataSource = DM2022.dbsPlayers then selectedDB := DM2022.tblPlayers
+  else if dbgDisplay.DataSource = DM2022.dbsGames then selectedDB := DM2022.tblGames;
+ // else if dbgDisplay.DataSource = DM2022.dbsSQL then selectedDB := DM2022.dbsSQL;
 
 
-  if dbgDisplay.DataSource = DM2022.dbsPlayers then
-    begin
-      selectedDB := DM2022.tblPlayers;
-      columnsAMT := dbgDisplay.Columns.Count - 1;
-    end
-  else if dbgDisplay.DataSource = DM2022.dbsGames then
-    begin
-    selectedDB := DM2022.tblGames;
-    columnsAMT := dbgDisplay.Columns.Count - 1;
-    end;
-  //se selectedDB := Datasrc;
+  columnsAMT := dbgDisplay.Columns.Count - 1;
+
   if columnsAMT = 8 then dbgDisplay.Columns[columnsAMT].Visible := FALSE;
-
 
   cmbFilter.Items.Clear;
   for iLoop := 0 to columnsAMT do BEGIN
     dbgDisplay.Columns[iLoop].Color := dbColor;
-    colWidth := colWidth + dbgDisplay.Columns[iLoop].Width;
+    colWidth := colWidth + dbgDisplay.Columns[iLoop].Width; //finds total width of all columns
     if not(dbgDisplay.Columns[iLoop].Field.FieldName = 'password') then
      cmbFilter.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
   END;
-
+ showMessage('updated column');
   dbgDisplay.Width := colWidth + 38;
 end;
 

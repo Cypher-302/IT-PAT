@@ -11,6 +11,7 @@ object DM2022: TDM2022
     LoginPrompt = False
     Mode = cmReadWrite
     Provider = 'Microsoft.Jet.OLEDB.4.0'
+    BeforeConnect = conBeforeConnect
     Left = 40
     Top = 24
   end
@@ -18,6 +19,8 @@ object DM2022: TDM2022
     Active = True
     Connection = con
     CursorType = ctStatic
+    AfterOpen = tblPlayersAfterOpen
+    AfterScroll = tblPlayersAfterScroll
     TableName = 'players'
     Left = 136
     Top = 24
@@ -36,6 +39,8 @@ object DM2022: TDM2022
     Active = True
     Connection = con
     CursorType = ctStatic
+    AfterOpen = tblGamesAfterOpen
+    AfterScroll = tblGamesAfterScroll
     TableName = 'games'
     Left = 136
     Top = 88

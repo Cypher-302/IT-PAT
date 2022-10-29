@@ -10,10 +10,8 @@ type
   TfrmHome = class(TForm)
     imgHome: TImage;
     btnChangelog: TImage;
-    btnPodium: TImage;
     btnViewDB: TImage;
     procedure btnViewDBClick(Sender: TObject);
-    procedure btnPodiumClick(Sender: TObject);
     procedure btnChangelogClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
     procedure FormCreate(Sender: TObject);
@@ -63,40 +61,7 @@ begin
   // opens changelog
 end;
 
-procedure TfrmHome.btnPodiumClick(Sender: TObject);
-var winner_score: Array of Integer;
-    winner_name : Array of String;
-    iLoop       : Integer;
-begin
-iLoop := 0;
-DM2022.tblGames.First;
- while not eof(DM2022.tblGames) do BEGIN
-  if DM2022.tblGames['winner'] = '' then
-   if DM2022.tblGames['player1_score'] > DM2022.tblGames['player2_score']
-    THEN DM2022.tblGames['winner'] := DM2022.tblGames['player1_id']
-    ELSE
-     if DM2022.tblGames['player1_score'] < DM2022.tblGames['player2_score']
-      then DM2022.tblGames['winner'] := DM2022.tblGames['player2_id']
-      else DM2022.tblGames['winner'] := 'Draw';
 
-  if DM2022.tblGames['winner'] = 'draw' then
-  begin
-    winner_name[iLoop] := DM2022.tblGames['player1_id'];
-    winner_score[iLoop] := winner_score[iLoop] + 0.5;
-    INC(iLoop);                                                //SEARCH FOR MULTIPLE OCCURENCES
-    winner_name[iLoop] := DM2022.tblGames['player2_id'];
-    winner_score[iLoop] := winner_score[iLoop] + 0.5;
-  end
-  else begin
-    winner_name[iLoop] := DM2022.tblGames['winner'];
-    winner_score[iLoop] := winner_score[iLoop] + 1;
-  end;
-
-DM2022.tblGames.Next;
-INC(iLoop);
- END;
-
-end;
 
 procedure TfrmHome.btnViewDBClick(Sender: TObject);
 begin
