@@ -48,7 +48,7 @@ uses uHome;
 
 {$R *.dfm}
 
-function TfrmRegistration.isLetters(name : String): Boolean;
+function TfrmRegistration.isLetters(name : String): Boolean; //checks if the inputted string is a letter from A to Z
 var iLoop: Integer;
 begin
 result:= TRUE;
@@ -59,10 +59,10 @@ result:= TRUE;
   end;
 end;
 
-function TfrmRegistration.nameCheck(firstName, lastName: String): Boolean;
-begin
+function TfrmRegistration.nameCheck(firstName, lastName: String): Boolean; //validates the inputted first and last name
+begin                                                                      //must be more than 3 letters, and only contain letters
 result := FALSE;
-   if (Length(firstName) > 3) AND (isLetters(firstName)) then begin       // in ['a' .. 'z', 'A' .. 'Z']
+   if (Length(firstName) > 3) AND (isLetters(firstName)) then begin
     result := TRUE;
     edtFirstName.Color := clWindow;
    end
@@ -83,7 +83,7 @@ result := FALSE;
   END;
 end;
 
-function TfrmRegistration.emailCheck(email: String): Boolean;
+function TfrmRegistration.emailCheck(email: String): Boolean;  //validates inputted email, checks for an @ and . symbol
 begin
 result := FALSE;
    if (POS('@', email) >0) AND (POS('.', email) > 0) then begin
@@ -94,10 +94,11 @@ result := FALSE;
     edtEmail.Color := clRed;
 end;
 
-function TfrmRegistration.phoneCheck(phoneNum: String): Boolean;
-begin
-result := FALSE;
-  if (Length(phoneNum) > 9) AND (phoneNum[4] = '-') AND (phoneNum[8] = '-') then begin
+function TfrmRegistration.phoneCheck(phoneNum: String): Boolean; //validates inputted phone number, checks if the format is correct,
+begin                                                            // >9 characters
+result := FALSE;                                                 //format: 123-456-7890
+  if (Length(phoneNum) > 9) AND (phoneNum[4] = '-') AND (phoneNum[8] = '-') then
+  begin
     result := TRUE;
     edtPhone.Color := clWindow;
   end
@@ -109,8 +110,8 @@ end;
 
 function TfrmRegistration.GetAge(const BirthDate, CurrentDate: TDateTime): Integer;
 var
-    y1, m1, d1: Word; //DoB
-    y2, m2, d2: Word; //today
+    y1, m1, d1: Word; //DoB                                     //outputs the age of the user, by taking the inputted age
+    y2, m2, d2: Word; //today                                   //and the current time
 begin
     Result := 0;
     if CurrentDate < BirthDate then Exit;
@@ -127,10 +128,10 @@ begin
 end;
 
 function TfrmRegistration.DoBCheck(DoB: TDate; var age: Integer): Boolean;
-begin
-result := FALSE;
-  if (DoB > today) OR (age > 130) then begin
-   dtpBirth.Color := clRed;
+begin                                                           //validates the DoB selected by the user, and their age
+result := FALSE;                                                //checks if the age is higher than 130
+  if (DoB > today) OR (age > 130) then begin                    //(higher than highest recorded age)
+   dtpBirth.Color := clRed;                                     //checks that the DoB is not in the future
    messageDlg('Please select a valid date of birth!',mtWarning,[mbOk],0);
   end
   else begin
@@ -139,7 +140,7 @@ result := FALSE;
   end;
 end;
 
-function TfrmRegistration.shirtSizeCheck(): Boolean;
+function TfrmRegistration.shirtSizeCheck(): Boolean;       //validates that the user has selected a shirt size
 begin
 result := FALSE;
   if cboShirtSizes.ListFieldIndex = -1 then begin
@@ -152,7 +153,7 @@ result := FALSE;
   end;
 end;
 
-function TfrmRegistration.genderCheck(): Boolean;
+function TfrmRegistration.genderCheck(): Boolean;         //validates that the user has selected a gender
 begin
 result := FALSE;
   if cboGenders.ListFieldIndex = -1 then begin
@@ -165,9 +166,9 @@ result := FALSE;
   end;
 end;
 
-function TfrmRegistration.passwordCheck(password: String): Boolean;
-begin
-result := FALSE;
+function TfrmRegistration.passwordCheck(password: String): Boolean; //validates the user password
+begin                                                               // 5 <= password > 24
+result := FALSE;                                                    //password nees to be longer/equal to 5 char, and less than 20 char
   if Length(edtPassword.Text) <= 5 then
     messageDlg('Password cannot be less than 5 characters (letters/numbers/symbols)!',mtWarning,[mbOk],0)
   else if Length(edtPassword.Text) > 24 then
@@ -177,8 +178,8 @@ result := FALSE;
 end;
 
 procedure TfrmRegistration.FormCloseQuery(Sender: TObject;
-  var CanClose: Boolean);
-begin
+  var CanClose: Boolean);                              //ensures that the user does not access the Home form without loggin in or
+begin                                                  //registering first
   if frmHome.isValid = FALSE then
 
     case MessageDlg
@@ -190,7 +191,7 @@ begin
     end;
 end;
 
-procedure TfrmRegistration.FormCreate(Sender: TObject);
+procedure TfrmRegistration.FormCreate(Sender: TObject);  //makes the borders of some components clear, aesthetic improvement
 begin
   SetWindowRgn(cboGenders.Handle, CreateRectRgn(2, 2, cboGenders.Width - 2,
       cboGenders.Height - 2), True);
@@ -201,14 +202,14 @@ begin
       dtpBirth.Height - 2), True);
 end;
 
-procedure TfrmRegistration.imgLoginLinkClick(Sender: TObject);
+procedure TfrmRegistration.imgLoginLinkClick(Sender: TObject); //displays the login form
 begin
   frmLogin.ShowModal;
 end;
 
-procedure TfrmRegistration.imgSignUpClick(Sender: TObject);
-begin
-
+procedure TfrmRegistration.imgSignUpClick(Sender: TObject);    //if all inputs are valid,
+begin                                                          //inputs the data and displays a welcome message
+                                                               //otherwise displays an error message
 if inputValidation then
    BEGIN
     DM2022.tblPlayers['birth'] := DateToStr(dtpBirth.Date);
@@ -224,8 +225,8 @@ if inputValidation then
 
 end;
 
-function TfrmRegistration.inputValidation: Boolean;
-var age: Integer;
+function TfrmRegistration.inputValidation: Boolean;      //checks if all inputs are valid
+var age: Integer;                                        //also gets the user's age, for use in DoBCheck
 begin
   age:= GetAge(dtpBirth.DateTime, Today);
   if nameCheck(edtFirstName.Text, edtLastName.Text) AND

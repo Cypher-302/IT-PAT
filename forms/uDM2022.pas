@@ -37,7 +37,7 @@ implementation
 
 {$R *.dfm}
 
-procedure TDM2022.conBeforeConnect(Sender: TObject);
+procedure TDM2022.conBeforeConnect(Sender: TObject); //writes to log before connection to the database is made
 begin
 AssignFile(log, 'log.txt');
     Rewrite(log);
@@ -45,7 +45,7 @@ AssignFile(log, 'log.txt');
 CloseFile(log);
 end;
 
-procedure TDM2022.tblGamesAfterOpen(DataSet: TDataSet);
+procedure TDM2022.tblGamesAfterOpen(DataSet: TDataSet); //writes to log tblGames is opened
 begin
 AssignFile(log, 'log.txt');
     Rewrite(log);
@@ -53,7 +53,7 @@ AssignFile(log, 'log.txt');
 CloseFile(log);
 end;
 
-procedure TDM2022.tblPlayersAfterOpen(DataSet: TDataSet);
+procedure TDM2022.tblPlayersAfterOpen(DataSet: TDataSet); //writes to log tblPlayers is opened
 begin
 AssignFile(log, 'log.txt');
     Rewrite(log);
@@ -61,16 +61,16 @@ AssignFile(log, 'log.txt');
 CloseFile(log);
 end;
 
-procedure TDM2022.tblPlayersAfterScroll(DataSet: TDataSet);
-begin
+procedure TDM2022.tblPlayersAfterScroll(DataSet: TDataSet); //writes to log textfile when record pointer movement is detected
+begin                                                       //in tblPlayers
 AssignFile(log, 'log.txt');
     Append(log);
     Writeln(log, 'Scrolling Players: '+IntToStr(tblPlayers.RecNo)+'of '+ IntToStr(tblPlayers.Recordset.RecordCount ));
 CloseFile(log);
 end;
 
-procedure TDM2022.tblGamesAfterScroll(DataSet: TDataSet);
-begin
+procedure TDM2022.tblGamesAfterScroll(DataSet: TDataSet); //writes to log textfile when record pointer movement is detected
+begin                                                     //in tblGames
 AssignFile(log, 'log.txt');
     Append(log);
     Writeln(log, 'Scrolling Games: '+IntToStr(tblPlayers.RecNo)+' of '+ IntToStr(tblPlayers.Recordset.RecordCount ));

@@ -4226,7 +4226,7 @@ object frmLogin: TfrmLogin
   object edtEmail: TEdit
     Left = 40
     Top = 290
-    Width = 289
+    Width = 297
     Height = 40
     BorderStyle = bsNone
     Font.Charset = DEFAULT_CHARSET

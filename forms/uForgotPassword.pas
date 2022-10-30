@@ -27,13 +27,13 @@ implementation
 uses uHome, uDM2022;
 {$R *.dfm}
 
-procedure TfrmForgotPassword.FormActivate(Sender: TObject);
-begin
+procedure TfrmForgotPassword.FormActivate(Sender: TObject); //sets the text of edtEmail to the global variable
+begin                                                       //that contains the user's email
 edtEmail.Text := frmHome.userEmail;
 end;
 
-procedure TfrmForgotPassword.imgSignUpClick(Sender: TObject);
-begin
+procedure TfrmForgotPassword.imgSignUpClick(Sender: TObject); //validates that the email exists in the database, if so, adds to
+begin                                                         //changelog file, if not, displays error message
 if DM2022.tblPlayers.Locate('email',edtEmail.Text,[]) = TRUE then BEGIN
  frmHome.userEmail:= edtEmail.Text;
  frmHome.logChange('requests a password change!');

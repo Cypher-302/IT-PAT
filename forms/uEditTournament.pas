@@ -29,8 +29,8 @@ uses uAddTournament, uDM2022, uDBDisplay;
 
 {$R *.dfm}
 
-procedure TfrmEditTournament.imgSignUpClick(Sender: TObject);
-begin
+procedure TfrmEditTournament.imgSignUpClick(Sender: TObject); //if validation (from AddTournament) passes, a message asking for
+begin                                                         //confirmation of changes is displayed, if yes is selected, the form closes and the changes are commited
  if frmAddTournament.validation(edtP1id.Text,edtP2id.Text,edtP1Score.Text,edtP2Score.Text) = TRUE
   then if messageDlg('Are you satisfied with the changes made and wish to proceed?',
   mtConfirmation,[mbYes,mbNo],0) = mrYes then self.Close;

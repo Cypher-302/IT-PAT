@@ -58,47 +58,46 @@ type
 
 var
   frmDBDisplay: TfrmDBDisplay;
-//  DataSrc : TDataSource;
-  selectedDB: TADOTable;
-  dbColor: TColor;
+  selectedDB: TADOTable;  //holds the current TADOTable that refers to the datasource displaying in dbgDisplay
+  dbColor: TColor;        //NOTE: selectedDB only holds the TADOTable for tblPlayers/tblGames, not the result of qry
   columnsAMT: Integer;
 
 implementation
-uses uEdit, uAddTournament, uEditTournament, uDM2022, uLogin, uHome, uMain;
+uses uEdit, uAddTournament, uEditTournament, uDM2022, uLogin, uHome;
 
 {$R *.dfm}
 
-procedure TfrmDBDisplay.runSQL(sSQL: String);
-begin
+procedure TfrmDBDisplay.runSQL(sSQL: String);   //adds the SQL string to the TADOQuery (qry) in DM2022
+begin                                           //runs the SQL, then calls procedure Tabs()
   DM2022.qry.SQL.Clear;
   DM2022.qry.SQL.ADD(sSQL);
   DM2022.qry.Open;
   Tabs();
 end;
 
-procedure TfrmDBDisplay.Tabs;
+procedure TfrmDBDisplay.Tabs;                 //updates the dbgDisplay with the result of the SQL
 begin
   refresh(DM2022.dbsSQL);
 end;
 
-procedure TfrmDBDisplay.btnFirstClick(Sender: TObject);
-begin
+procedure TfrmDBDisplay.btnFirstClick(Sender: TObject); //navigates to the first entry in either qry, tblPlayers or tblGames
+begin                                                   //depending on the current datasource displaying in dbgDisplay
   if dbgDisplay.DataSource = DM2022.dbsSQL then
   DM2022.qry.First
   else selectedDB.First;
 end;
 
-procedure TfrmDBDisplay.btnLastClick(Sender: TObject);
-begin
+procedure TfrmDBDisplay.btnLastClick(Sender: TObject); //navigates to the last entry in either qry, tblPlayers or tblGames
+begin                                                  //depending on the current datasource displaying in dbgDisplay
   if dbgDisplay.DataSource = DM2022.dbsSQL then
   DM2022.qry.Last
   else selectedDB.Last;
 end;
 
-procedure TfrmDBDisplay.btnLoadSQLClick(Sender: TObject);
-var sLine,sTotal,fileName,FilePath: String;
-    tf: TextFile;
-begin
+procedure TfrmDBDisplay.btnLoadSQLClick(Sender: TObject);     //loads an SQL command from the relevant filename of a textfile
+var sLine,sTotal,fileName,FilePath: String;                   //present in the reports folder
+    tf: TextFile;                                             //then runs that SQL command and throws an error if there is one
+begin                                                         //displays message upon completion of running SQL if there is no error
 fileName:= InputBox('File Name','Enter the name of the file: ','SQL.txt');
 filePath:= '.\reports\'+fileName;
 if not FileExists(filePath) then begin messageDlg('The path: '+filePath+
@@ -115,35 +114,36 @@ end
 try
  sSQL:= sTotal;
  runSQL(sSQL);
+  messageDlg('Ran SQL from file.',mtInformation,[mbOk],0);
 except
  messageDlg('Error when running SQL, please check '+fileName+' for errors/typos!',
  mtWarning,[mbOk],0);
 end;
 end;
 
-procedure TfrmDBDisplay.btnNextClick(Sender: TObject);
-begin
+procedure TfrmDBDisplay.btnNextClick(Sender: TObject);//navigates to the next entry in either qry, tblPlayers or tblGames
+begin                                                 //depending on the current datasource displaying in dbgDisplay
   if dbgDisplay.DataSource = DM2022.dbsSQL then
   DM2022.qry.Next
   else selectedDB.Next;
 end;
 
-procedure TfrmDBDisplay.btnPriorClick(Sender: TObject);
-begin
+procedure TfrmDBDisplay.btnPriorClick(Sender: TObject);//navigates to the previous entry in either qry, tblPlayers or tblGames
+begin                                                  //depending on the current datasource displaying in dbgDisplay
   if dbgDisplay.DataSource = DM2022.dbsSQL then
   DM2022.qry.Prior
   else selectedDB.Prior;
 end;
 
-procedure TfrmDBDisplay.btnRefreshClick(Sender: TObject);
+procedure TfrmDBDisplay.btnRefreshClick(Sender: TObject); //refreshes the data displayed in dbgDisplay
 begin
 rdDisplayClick(rdDisplay);
 end;
 
-procedure TfrmDBDisplay.btnPodiumClick(Sender: TObject);
-var winner_score: Array of Integer;
-    winner_name : Array of String;
-    iLoop, iLoop2       : Integer;
+procedure TfrmDBDisplay.btnPodiumClick(Sender: TObject);  //checks if there are records with an empty winner slot
+var winner_score: Array of Integer;                       //in table "games", if there are, it fills that with the winner/"Draw"
+    winner_name : Array of String;                        //then runs SQL to display the TOP 3 POSITIONS (podium positions)
+    iLoop, iLoop2       : Integer;                        // with their name, id and amount of wins
     len, iTemp: Integer;
     sTemp : String;
 begin
@@ -188,36 +188,18 @@ while not DM2022.tblGames.Eof do with DM2022 do
 
 end;
 
-procedure TfrmDBDisplay.btnReportClick(Sender: TObject);
-var tf: TextFile;
-    iLoop: Integer;
-    isFiltered: Boolean;
-    sLine,sHeader,sItem: String;
-begin
-  isFiltered := FALSE;
-  AssignFile(tf, '.\reports\report2.txt');
-  ReWrite(tf);
-  {selectedDS := dbgDisplay.DataSource.DataSet;
-  //DM2022.qry.SaveToFile('.\reports\report2.txt',pfXML);
-  //while not DM2022.qry.eof do
-  //writeln(tf, DM2022.qry.
-  //writeln(tf, DM2022.dbsSQL.ToString);
-        while not selectedDS.Eof do
-      begin
-        for iLoop := 0 to dbgDisplay.Columns.Count - 1 do
-        begin
-          if Assigned(dbgDisplay.Columns[iLoop].Field) then
-          begin
-            aLine := dbgDisplay.Columns[iLoop].Field.AsString+#9;
-            showMessage(aLine);
-          end;
-        end;
-        writeln(tf, aLine);
-        selectedDS.Next;
-      end;}
-  for iLoop := 0 to cmbFilter.Items.Count
-   do sHeader := sHeader+cmbFilter.Items[iLoop]+#9;
-
+procedure TfrmDBDisplay.btnReportClick(Sender: TObject);       //writes the current data displayed in dbgDisplay
+var tf: TextFile;                                              //it does not matter if the data is a result of a query or
+    iLoop: Integer;                                            //directly from the database, as it takes the fieldnames from
+    isFiltered: Boolean;                                       //the name of each column
+    sLine,sHeader,sItem: String;                               //this is then run through a loop to write every column and row
+begin                                                          //presently displayed in dbgDisplay to the textfile
+  isFiltered := FALSE;                                         //accounts for columns that contain integers or dates
+  AssignFile(tf, '.\reports\report2.txt');                     //adds extra tab spacing in the case of "Male" being displayed
+  ReWrite(tf);                                                 //to improve readablity of the textfile.
+  for iLoop := 0 to cmbFilter.Items.Count                      //A heading, containing all present columns, is written to the textfile
+   do sHeader := sHeader+cmbFilter.Items[iLoop]+#9;            //before every other line.
+                                                               //displays a message upon confirmation
 Writeln(tf,sHeader);
  if dbgDisplay.DataSource = DM2022.dbsSQL then isFiltered := TRUE;
 
@@ -252,7 +234,6 @@ with DM2022 do begin
      for iLoop := 0 to cmbFilter.Items.Count-1 do
       BEGIN
        sItem := cmbFilter.Items[iLoop];
-       //showMessage(sItem);
        if (sItem = 'ID') OR (sItem = 'id') OR (sItem = 'player1_id') OR
        (sItem = 'player2_id') OR (sItem = 'player1_score') OR
        (sItem = 'player2_score')
@@ -269,13 +250,13 @@ with DM2022 do begin
     end;
   END;
 end;
-  showMessage('ran');
+  messageDlg('Succesfully wrote to TextFile.',mtInformation,[mbOk],0);
   CloseFile(tf);
 end;
 
-procedure TfrmDBDisplay.cmbFilterChange(Sender: TObject);
-var sFind, sField, sTable : String;
-begin
+procedure TfrmDBDisplay.cmbFilterChange(Sender: TObject);   //allows the user to filter for any text within any column
+var sFind, sField, sTable : String;                         //in the displayed table of the database (tblGames/tblPlayers)
+begin                                                       //done through a combobox selection and inputbox
   sField := cmbFilter.Items[cmbFilter.ItemIndex];
   sFind := QuotedStr(InputBox('Filter','Enter filter item for: '+sField,''));
 
@@ -286,9 +267,9 @@ begin
   self.runSQL(sSQL);
 end;
 
-procedure TfrmDBDisplay.cmbSearchChange(Sender: TObject);
-var sFind, sField, sTable : String;
-begin
+procedure TfrmDBDisplay.cmbSearchChange(Sender: TObject); //allows the user to search for any text within any column
+var sFind, sField, sTable : String;                       //in the displayed table of the database (tblGames/tblPlayers)
+begin                                                     //done through a combobox selection and inputbox
   sField := cmbSearch.Items[cmbSearch.ItemIndex];
   sFind := QuotedStr(InputBox('Search','Enter search item for: '+sField,''));
 
@@ -299,9 +280,9 @@ begin
   self.runSQL(sSQL);
 end;
 
-procedure TfrmDBDisplay.cmbSortChange(Sender: TObject);
-var sType, sTable, sField : String;
-begin
+procedure TfrmDBDisplay.cmbSortChange(Sender: TObject); //allows the user to choose to sort by Ascending or Descending
+var sType, sTable, sField : String;                     //for any column in the displayed table of the database (tbllGames/tblPlayers)
+begin                                                   //done through a combobox selection and inputbox
   sField := cmbSort.Items[cmbSort.ItemIndex];
   sType := InputBox('Sorting','Do you want to sort by Ascending or Descending: ','Ascending');
 
@@ -322,8 +303,8 @@ begin
   self.runSQL(sSQL);
 end;
 
-function TfrmDBDisplay.accessToRecord: Boolean;
-var email, email2: String;
+function TfrmDBDisplay.accessToRecord: Boolean;      //checks if the user is allowed to edit the current record
+var email, email2: String;                           //(if Admin, then allowed) (if userEmail matches the ID being edited, then allowed)
 begin
 result := FALSE;
  if frmLogin.isAdmin then result := TRUE;
@@ -343,8 +324,8 @@ result := FALSE;
   end;
 end;
 
-procedure TfrmDBDisplay.clkDeleteClick(Sender: TObject);
-begin
+procedure TfrmDBDisplay.clkDeleteClick(Sender: TObject);  //allows the user to delete a record in the currently displayed table,
+begin                                                     //given that they are authorised to, and confirm deletion
  if not(accessToRecord) then messageDlg('In order to delete records:'+#13+
  'The selected record must be yours, or'+#13+'You must be logged in as an Admin'
  , mtInformation, [mbOk], 0)
@@ -355,7 +336,7 @@ begin
             selectedDB.Delete;
             messageDlg('Record deleted.', mtInformation, [mbOk], 0);
             if selectedDB = DM2022.tblPlayers
-             then frmHome.logChange('Deleted record in tblPlayers.')
+             then frmHome.logChange('Deleted record in tblPlayers.')   //writes to the changelog upon deletion
              else if selectedDB = DM2022.tblGames
               then frmHome.logChange('Deleted record in tblGames.');
            end;
@@ -364,8 +345,8 @@ begin
   end;
 end;
 
-procedure TfrmDBDisplay.clkEditClick(Sender: TObject);
-
+procedure TfrmDBDisplay.clkEditClick(Sender: TObject);  //allows the user to edit a record in the currently displayed table,
+                                                        //given that they are authorised to, and confirm deletion
 begin
  if not(accessToRecord) then messageDlg('In order to edit records:'+#13+
  'The selected record must be yours, or'+#13+'You must be logged in as an Admin'
@@ -379,7 +360,7 @@ begin
     selectedDB.Post;
 
     if selectedDB = DM2022.tblPlayers
-     then frmHome.logChange('Edited record in tblPlayers.')
+     then frmHome.logChange('Edited record in tblPlayers.')     //writes to the changelog upon deletion
     else if selectedDB = DM2022.tblGames
      then frmHome.logChange('Edited record in tblGames.');
   except
@@ -387,8 +368,8 @@ begin
   end;
 end;
 
-procedure TfrmDBDisplay.clkInsertClick(Sender: TObject);
-begin
+procedure TfrmDBDisplay.clkInsertClick(Sender: TObject);   //allows the user to edit a record in the currently displayed table,
+begin                                                      //given that they are an admin
 if not frmLogin.isAdmin then messageDlg('You need to be logged in as an admin to insert!',mtWarning, [mbOk], 0)
 else
   try
@@ -399,7 +380,7 @@ else
     selectedDB.Post;
 
     if selectedDB = DM2022.tblPlayers
-     then frmHome.logChange('Inserted record into tblPlayers.')
+     then frmHome.logChange('Inserted record into tblPlayers.')     //writes to the changelog upon deletion
     else if selectedDB = DM2022.tblGames
      then frmHome.logChange('Inserted record into tblGames.');
   except
@@ -409,7 +390,7 @@ else
   end;
 end;
 
-function HexToTColor(sColor: string): TColor;
+function HexToTColor(sColor: string): TColor;         //takes input of RGB colour, transforms into delphi recoignised colour
 begin
   Result := RGB(StrToInt('$' + Copy(sColor, 1, 2)),
     StrToInt('$' + Copy(sColor, 3, 2)), StrToInt('$' + Copy(sColor, 5, 2)));
@@ -417,7 +398,7 @@ end;
 
 // -------------------------------------------------------
 
-procedure TfrmDBDisplay.FitGrid(Grid: TDBGrid);
+procedure TfrmDBDisplay.FitGrid(Grid: TDBGrid);  //fits each column to the minimum needed pixels, described in arrays writeup of PAT Phase 1
 const pixSpc = 5;
 var
   selectedDS: TDataSet;
@@ -462,7 +443,7 @@ begin
   end;
 end;
 
-procedure TfrmDBDisplay.FormActivate(Sender: TObject);
+procedure TfrmDBDisplay.FormActivate(Sender: TObject);  //refreshes the Display and gets the colour used for the fields of dbgDisplay
 begin
 
   dbColor := HexToTColor('B6D6CC');
@@ -470,37 +451,37 @@ begin
 
 end;
 
-procedure TfrmDBDisplay.updateCol();
+procedure TfrmDBDisplay.updateCol(); //assigns selectedDB, depending on the datasource of dbgDisplay
 var iLoop, colWidth : Integer;
 begin
 
   if dbgDisplay.DataSource = DM2022.dbsPlayers then selectedDB := DM2022.tblPlayers
   else if dbgDisplay.DataSource = DM2022.dbsGames then selectedDB := DM2022.tblGames;
 
-  columnsAMT := dbgDisplay.Columns.Count - 1;
+  columnsAMT := dbgDisplay.Columns.Count - 1;   //finds the amount of columns present
 
-  if columnsAMT = 8 then dbgDisplay.Columns[columnsAMT].Visible := FALSE;
-
+  if columnsAMT = 8 then dbgDisplay.Columns[columnsAMT].Visible := FALSE; //ensures that the password column is not displayed along
+                                                                          //with the other columns
   cmbFilter.Items.Clear;
-  cmbSort.Items.Clear;
+  cmbSort.Items.Clear;   //clears all items in comboboxes for filter, sort and search
   cmbSearch.Items.Clear;
   for iLoop := 0 to columnsAMT do BEGIN
-    dbgDisplay.Columns[iLoop].Color := dbColor;
+    dbgDisplay.Columns[iLoop].Color := dbColor;  //sets the colour of each column
     colWidth := colWidth + dbgDisplay.Columns[iLoop].Width; //finds total width of all columns
     if not(dbgDisplay.Columns[iLoop].Field.FieldName = 'password') then begin
      cmbFilter.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
-     cmbSort.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
-     cmbSearch.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
+     cmbSort.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);     //adds each column to the Items of filter, sort and search
+     cmbSearch.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);   //given that it is not the password column
     end;
   END;
-  dbgDisplay.Width := colWidth + 38;
-end;
+  dbgDisplay.Width := colWidth + 38;    //sets the width of the Display to the total width of all columns, and a set amount
+end;                                    //in order to account for cutoff of the last column in the display
 
 procedure TfrmDBDisplay.rdDisplayClick(Sender: TObject);
 begin
 
-  if (rdDisplay.ItemIndex = 0) then
-  begin
+  if (rdDisplay.ItemIndex = 0) then                 //assigns the datasource, dependant on the radiobutton clicked
+  begin                                             //then a calls procedure updateCol()
     dbgDisplay.DataSource := DM2022.dbsPlayers;
     updateCol();
   end;
@@ -513,8 +494,8 @@ begin
 
 end;
 
-procedure TfrmDBDisplay.refresh(dbgDS : TDataSource);
-begin
+procedure TfrmDBDisplay.refresh(dbgDS : TDataSource);  //assigns the datasource, based on the input recieved
+begin                                                  //calls procedure FitGrid and updateCol
   dbgDisplay.DataSource := dbgDS;
   FitGrid(dbgDisplay);
   updateCol();

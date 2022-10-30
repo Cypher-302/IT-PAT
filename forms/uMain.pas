@@ -11,9 +11,9 @@ uses
 type
   TfrmMain = class(TForm)
     pgcQuestions: TPageControl;
-    tbsQ2_2: TTabSheet;
-    tbsQ2_1: TTabSheet;
-    gbRegistration: TGroupBox;
+    tbsQ2_2: TTabSheet;                   //SHOULD NOT EXIST, NOT USED IN PROGRAM, PROGRAM ERRORS AND CRASHES IF uMAIN DOES NOT EXIST
+    tbsQ2_1: TTabSheet;                   //I HAVE GIVEN UP TRYING, I HAVE SIMPLY LEFT IT HERE.
+    gbRegistration: TGroupBox;            //AGAIN. IT IS NOT USED. IT SIMPLY HAS TO BE HERE FOR THE PROGRAM TO RUN.
     gbQueries: TGroupBox;
     Label4: TLabel;
     redOutput: TRichEdit;

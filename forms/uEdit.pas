@@ -33,8 +33,8 @@ implementation
 uses uRegistration, uLogin, uHome;
 {$R *.dfm}
 
-function TfrmEdit.inputValidation: Boolean;
-var age: Integer;
+function TfrmEdit.inputValidation: Boolean;  //uses uRegistration to run input validation on all fields inputted
+var age: Integer;                            //in this form, also obtains user age for use in DoBCheck
 begin
 with frmRegistration do BEGIN
   age:= GetAge(dtpBirth.DateTime, Today);
@@ -51,9 +51,9 @@ with frmRegistration do BEGIN
 END;
 end;
 
-procedure TfrmEdit.imgSubmitChangesClick(Sender: TObject);
-begin
-  if inputValidation()
+procedure TfrmEdit.imgSubmitChangesClick(Sender: TObject);  //if validation passes, a message asking for
+begin                                                       //confirmation of changes is displayed, if yes
+  if inputValidation()                                      //is selected, the form closes and the changes are commited
    then if messageDlg('Are you satisfied with the changes made and wish to proceed?',
         mtConfirmation,[mbYes,mbNo],0) = mrYes then self.Close;
 

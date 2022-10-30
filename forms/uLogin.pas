@@ -33,8 +33,8 @@ implementation
 uses uRegistration, uHome, uForgotPassword;
 {$R *.dfm}
 
-procedure TfrmLogin.chkAdminClick(Sender: TObject);
-begin
+procedure TfrmLogin.chkAdminClick(Sender: TObject); //checks if the admin checkbox is selected,
+begin                                               //then does the relevant processing
   if (chkAdmin.Checked) then
   BEGIN
     isAdminSlc := TRUE;
@@ -58,18 +58,18 @@ begin
 
 end;
 
-procedure TfrmLogin.FormActivate(Sender: TObject);
+procedure TfrmLogin.FormActivate(Sender: TObject);    //assigns variable default values
 begin
   isAdminSlc := FALSE;
   isAdmin := FALSE;
 end;
 
-procedure TfrmLogin.imgbtnLoginClick(Sender: TObject);
-begin
-  if (isAdminSlc = TRUE) AND (edtPassword.Text = 'admin') then
-  begin
-    messageDlg('Welcome admin.', mtInformation, [mbOk], 0);
-    isAdmin := TRUE;
+procedure TfrmLogin.imgbtnLoginClick(Sender: TObject);         //detects if the user has entered the right password,
+begin                                                          //if they have selected that they are an admin
+  if (isAdminSlc = TRUE) AND (edtPassword.Text = 'admin') then //also checks if the inputted email and password exist and match,
+  begin                                                        //if they have not specified that they are an admin
+    messageDlg('Welcome admin.', mtInformation, [mbOk], 0);    //displays relevant error messages, and updates global variables
+    isAdmin := TRUE;                                           //to show whether the user is an Admin/ if they are a user, their email
     frmHome.isValid := TRUE;
     Self.Close;
     frmRegistration.Close;
