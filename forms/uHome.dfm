@@ -3969,4 +3969,18 @@ object frmHome: TfrmHome
       6082}
     OnClick = btnViewDBClick
   end
+  object redOut: TRichEdit
+    Left = 169
+    Top = 415
+    Width = 228
+    Height = 130
+    Font.Charset = ANSI_CHARSET
+    Font.Color = clWindowText
+    Font.Height = -11
+    Font.Name = 'Tahoma'
+    Font.Style = []
+    ParentFont = False
+    TabOrder = 0
+    Visible = False
+  end
 end

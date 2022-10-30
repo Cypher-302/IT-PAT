@@ -4,13 +4,14 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, pngimage, ExtCtrls, StdCtrls;
+  Dialogs, pngimage, ExtCtrls, StdCtrls, ComCtrls;
 
 type
   TfrmHome = class(TForm)
     imgHome: TImage;
     btnChangelog: TImage;
     btnViewDB: TImage;
+    redOut: TRichEdit;
     procedure btnViewDBClick(Sender: TObject);
     procedure btnChangelogClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
@@ -22,6 +23,7 @@ type
     { Public declarations }
     isValid : Boolean;
     userEmail : String;
+    procedure logChange(input:String);
   end;
 
 var
@@ -57,8 +59,18 @@ procedure TfrmHome.QuickSort(var A: array of Integer; iLo, iHi: Integer);
 end;
 
 procedure TfrmHome.btnChangelogClick(Sender: TObject);
+var sLine : String;
+    tf    : TextFile;
 begin
-  // opens changelog
+ redOut.Visible := TRUE;
+ redOut.Clear;
+ AssignFile(tf, '.\reports\changelog.txt');
+ Reset(tf);
+ while not eof(tf) do begin
+  Readln(tf, sLine);
+  redOut.Lines.Add(sLine);
+ end;
+ CloseFile(tf);
 end;
 
 
@@ -87,6 +99,18 @@ end;
 procedure TfrmHome.FormCreate(Sender: TObject);
 begin
 isValid := FALSE;
+end;
+
+procedure TfrmHome.logChange(input: String);
+var tf: TextFile;
+    userID: Integer;
+begin
+AssignFile(tf, '.\reports\changelog.txt');
+Append(tf);
+ DM2022.tblPlayers.Locate('email',userEmail,[]);
+ userID:= DM2022.tblPlayers['ID'];
+ Writeln(tf, 'User: '+IntToStr(userID)+' '+input);
+ CloseFile(tf);
 end;
 
 end.

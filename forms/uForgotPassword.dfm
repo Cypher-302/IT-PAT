@@ -11,6 +11,7 @@ object frmForgotPassword: TfrmForgotPassword
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnActivate = FormActivate
   PixelsPerInch = 96
   TextHeight = 13
   object imgBackground: TImage
@@ -920,21 +921,21 @@ object frmForgotPassword: TfrmForgotPassword
     Top = 432
     Width = 201
     Height = 49
+    OnClick = imgSignUpClick
   end
-  object edtPlayer1ID: TDBEdit
+  object edtEmail: TEdit
     Left = 256
     Top = 288
     Width = 281
     Height = 24
     BorderStyle = bsNone
-    DataField = 'email'
-    DataSource = DM2022.dbsPlayers
     Font.Charset = DEFAULT_CHARSET
-    Font.Color = clBlack
+    Font.Color = clWindowText
     Font.Height = -13
     Font.Name = 'Tahoma'
     Font.Style = []
     ParentFont = False
     TabOrder = 0
+    Text = 'edtEmail'
   end
 end

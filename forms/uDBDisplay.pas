@@ -256,10 +256,16 @@ end;
 
 procedure TfrmDBDisplay.clkDeleteClick(Sender: TObject);
 begin
+ if not(accessToRecord) then messageDlg('In order to delete records:'+#13+
+ 'The selected record must be yours, or'+#13+'You must be logged in as an Admin'
+ , mtInformation, [mbOk], 0)
+ else
   case messageDlg('Are you sure that you want to delete this record?',
     mtConfirmation, [mbYes, mbNo], 0) of
-    mrYes:
-      selectedDB.Delete;
+    mrYes: begin
+            selectedDB.Delete;
+            messageDlg('Record deleted.', mtInformation, [mbOk], 0);
+           end;
     mrNo:
       messageDlg('Record deletion cancelled.', mtInformation, [mbOk], 0);
   end;
@@ -268,8 +274,6 @@ end;
 procedure TfrmDBDisplay.clkEditClick(Sender: TObject);
 
 begin
-accessToRecord;
-
  if not(accessToRecord) then messageDlg('In order to edit records:'+#13+
  'The selected record must be yours, or'+#13+'You must be logged in as an Admin'
  , mtInformation, [mbOk], 0)

@@ -19,13 +19,11 @@ type
     dtpBirth: TDateTimePicker;
     imgSubmitChanges: TImage;
     procedure imgSubmitChangesClick(Sender: TObject);
-    procedure FormActivate(Sender: TObject);
-    procedure fillFields();
+    function inputValidation(): Boolean;
   private
     { Private declarations }
   public
     { Public declarations }
-    isValidEdit : Boolean;
   end;
 
 var
@@ -35,22 +33,29 @@ implementation
 uses uRegistration, uLogin, uHome;
 {$R *.dfm}
 
-procedure TfrmEdit.fillFields;
+function TfrmEdit.inputValidation: Boolean;
+var age: Integer;
 begin
-  edtFirstName.Text := 'e';
-  edtEmail.Text := frmHome.userEmail;
-end;
-
-procedure TfrmEdit.FormActivate(Sender: TObject);
-begin
-  isValidEdit := FALSE;
-  fillFields();
+with frmRegistration do BEGIN
+  age:= GetAge(dtpBirth.DateTime, Today);
+  if nameCheck(edtFirstName.Text, edtLastName.Text) AND
+  emailCheck(edtEmail.Text) AND
+  phoneCheck(edtPhone.Text) AND
+  DoBCheck(dtpBirth.Date, age) AND
+  shirtSizeCheck() AND
+  genderCheck() AND
+  passwordCheck(edtPassword.Text) then
+   result := TRUE
+  else
+   result := FALSE;
+END;
 end;
 
 procedure TfrmEdit.imgSubmitChangesClick(Sender: TObject);
 begin
-  if frmRegistration.inputValidation() then showMessage('passed!');
-
+  if inputValidation()
+   then if messageDlg('Are you satisfied with the changes made and wish to proceed?',
+        mtConfirmation,[mbYes,mbNo],0) = mrYes then self.Close;
 
 end;
 

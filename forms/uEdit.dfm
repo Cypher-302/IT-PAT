@@ -11,7 +11,6 @@ object frmEdit: TfrmEdit
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnActivate = FormActivate
   PixelsPerInch = 96
   TextHeight = 13
   object TImage

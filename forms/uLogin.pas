@@ -91,7 +91,10 @@ begin
     else begin
       messageDlg('Password is incorrect!',mtWarning,[mbOk],0);
       case messageDlg('Do you want to reset your password?',mtInformation,[mbYes,mbNo],0) of
-      mrYes: frmForgotPassword.showModal;
+      mrYes: BEGIN
+              frmHome.userEmail := edtEmail.Text;
+              frmForgotPassword.showModal;
+             END;
       end;
     end;
   END

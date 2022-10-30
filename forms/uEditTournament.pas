@@ -32,7 +32,8 @@ uses uAddTournament, uDM2022, uDBDisplay;
 procedure TfrmEditTournament.imgSignUpClick(Sender: TObject);
 begin
  if frmAddTournament.validation(edtP1id.Text,edtP2id.Text,edtP1Score.Text,edtP2Score.Text) = TRUE
-  then self.Close;
+  then if messageDlg('Are you satisfied with the changes made and wish to proceed?',
+  mtConfirmation,[mbYes,mbNo],0) = mrYes then self.Close;
  end;
 
 end.

@@ -27,11 +27,13 @@ type
     function nameCheck(firstName, LastName : String): Boolean;
     function emailCheck(email : String): Boolean;
     function phoneCheck(phoneNum : String): Boolean;
-    function DoBCheck(DoB : TDate): Boolean;
+    function DoBCheck(DoB: TDate; var age: Integer): Boolean;
     function shirtSizeCheck(): Boolean;
     function genderCheck(): Boolean;
     function passwordCheck(password : String): Boolean;
     function inputValidation(): Boolean;
+    function isLetters(name : String): Boolean;
+    function GetAge(const BirthDate, CurrentDate: TDateTime): Integer;
   private
     { Private declarations }
   public
@@ -45,34 +47,46 @@ implementation
 uses uHome;
 
 {$R *.dfm}
+
+function TfrmRegistration.isLetters(name : String): Boolean;
+var iLoop: Integer;
+begin
+result:= TRUE;
+  for iLoop := 1 to length(name) do
+  begin
+    name[iLoop] := Upcase(name[iLoop]);
+    if not(name[iLoop] in ['A' .. 'Z']) then result := FALSE
+  end;
+end;
+
 function TfrmRegistration.nameCheck(firstName, lastName: String): Boolean;
 begin
 result := FALSE;
-   if Length(firstName) > 3 then begin
+   if (Length(firstName) > 3) AND (isLetters(firstName)) then begin       // in ['a' .. 'z', 'A' .. 'Z']
     result := TRUE;
     edtFirstName.Color := clWindow;
    end
   else BEGIN
     edtFirstName.Color := clRed;
     result := FALSE;
-    messageDlg('First name must be over 3 letters!',mtWarning,[mbOk],0);
+    messageDlg('First name must be over 3 letters, and contain only letters!',mtWarning,[mbOk],0);
   END;
 
-  if Length(lastName) > 3 then begin
+  if (Length(lastName) > 3) AND (isLetters(lastName)) then begin
     result := TRUE;
     edtLastName.Color := clWindow;
   end
   else BEGIN
     edtLastName.Color := clRed;
     result := FALSE;
-    messageDlg('Last name must be over 3 letters!',mtWarning,[mbOk],0);
+    messageDlg('Last name must be over 3 letters, and contain only letters!',mtWarning,[mbOk],0);
   END;
 end;
 
 function TfrmRegistration.emailCheck(email: String): Boolean;
 begin
 result := FALSE;
-   if (POS('@', email) >0) then begin
+   if (POS('@', email) >0) AND (POS('.', email) > 0) then begin
     result := TRUE;
     edtEmail.Color := clWindow;
    end
@@ -87,16 +101,37 @@ result := FALSE;
     result := TRUE;
     edtPhone.Color := clWindow;
   end
-  else
+  else begin
     edtPhone.Color := clRed;
+    messageDlg('Format of phone number: 123-456-7890',mtWarning,[mbOk],0);
+  end;
 end;
 
-function TfrmRegistration.DoBCheck(DoB: TDate): Boolean;
+function TfrmRegistration.GetAge(const BirthDate, CurrentDate: TDateTime): Integer;
+var
+    y1, m1, d1: Word; //DoB
+    y2, m2, d2: Word; //today
+begin
+    Result := 0;
+    if CurrentDate < BirthDate then Exit;
+    DecodeDate(BirthDate, y1, m1, d1);
+    DecodeDate(CurrentDate, y2, m2, d2);
+
+    //Fudge someone born on the leap-day to Feb 28th of the same year
+    if ((m1=2) AND (d1=29)) AND (not IsLeapYear(y2)) then d1 := 28;
+
+    Result := y2-y1; //rough count of years
+
+    //Take away a year if the month/day is before their birth month/day
+    if (m2 < m1) OR ((m2=m1) AND (d2<d1)) then Dec(Result);
+end;
+
+function TfrmRegistration.DoBCheck(DoB: TDate; var age: Integer): Boolean;
 begin
 result := FALSE;
-  if (DoB > today) then begin
+  if (DoB > today) OR (age > 130) then begin
    dtpBirth.Color := clRed;
-   messageDlg('Date of birth cannot be in the future!',mtWarning,[mbOk],0);
+   messageDlg('Please select a valid date of birth!',mtWarning,[mbOk],0);
   end
   else begin
   dtpBirth.Color := clWindow;
@@ -107,8 +142,10 @@ end;
 function TfrmRegistration.shirtSizeCheck(): Boolean;
 begin
 result := FALSE;
-  if cboShirtSizes.ListFieldIndex = -1 then
-   cboShirtSizes.Color := clRed
+  if cboShirtSizes.ListFieldIndex = -1 then begin
+   cboShirtSizes.Color := clRed;
+   messageDlg('Please select a shirt size!',mtWarning,[mbOk],0);
+  end
   else begin
    cboShirtSizes.Color := clWindow;
    result := TRUE;
@@ -118,8 +155,10 @@ end;
 function TfrmRegistration.genderCheck(): Boolean;
 begin
 result := FALSE;
-  if cboGenders.ListFieldIndex = -1 then
-   cboGenders.Color := clRed
+  if cboGenders.ListFieldIndex = -1 then begin
+   cboGenders.Color := clRed;
+   messageDlg('Please select a gender!',mtWarning,[mbOk],0);
+  end
   else begin
   cboGenders.Color := clWindow;
   result := TRUE;
@@ -186,11 +225,13 @@ if inputValidation then
 end;
 
 function TfrmRegistration.inputValidation: Boolean;
+var age: Integer;
 begin
+  age:= GetAge(dtpBirth.DateTime, Today);
   if nameCheck(edtFirstName.Text, edtLastName.Text) AND
   emailCheck(edtEmail.Text) AND
   phoneCheck(edtPhone.Text) AND
-  DoBCheck(dtpBirth.Date) AND
+  DoBCheck(dtpBirth.Date, age) AND
   shirtSizeCheck() AND
   genderCheck() AND
   passwordCheck(edtPassword.Text) then
@@ -198,5 +239,6 @@ begin
   else
    result := FALSE;
 end;
+
 
 end.
