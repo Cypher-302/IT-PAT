@@ -26,6 +26,7 @@ type
     btnPodium: TButton;
     cmbSort: TComboBox;
     cmbSearch: TComboBox;
+    btnLoadSQL: TButton;
     procedure FormActivate(Sender: TObject);
     procedure rdDisplayClick(Sender: TObject);
     procedure btnNextClick(Sender: TObject);
@@ -41,10 +42,11 @@ type
     procedure cmbFilterChange(Sender: TObject);
     procedure btnRefreshClick(Sender: TObject);
     procedure btnReportClick(Sender: TObject);
-    procedure Button1Click(Sender: TObject);
+    procedure btnPodiumClick(Sender: TObject);
     function accessToRecord():Boolean;
     procedure cmbSortChange(Sender: TObject);
     procedure cmbSearchChange(Sender: TObject);
+    procedure btnLoadSQLClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -62,10 +64,10 @@ var
   columnsAMT: Integer;
 
 implementation
-uses uEdit, uAddTournament, uEditTournament, uDM2022, uLogin, uHome;
+uses uEdit, uAddTournament, uEditTournament, uDM2022, uLogin, uHome, uMain;
 
 {$R *.dfm}
- //   sSQL := '';       self.runSQL(sSQL);
+
 procedure TfrmDBDisplay.runSQL(sSQL: String);
 begin
   DM2022.qry.SQL.Clear;
@@ -93,6 +95,32 @@ begin
   else selectedDB.Last;
 end;
 
+procedure TfrmDBDisplay.btnLoadSQLClick(Sender: TObject);
+var sLine,sTotal,fileName,FilePath: String;
+    tf: TextFile;
+begin
+fileName:= InputBox('File Name','Enter the name of the file: ','SQL.txt');
+filePath:= '.\reports\'+fileName;
+if not FileExists(filePath) then begin messageDlg('The path: '+filePath+
+' does not point to a file.'+#13+'Ensure that your file is in the "reports" folder'
++' and that you have typed the file name correctly',mtWarning,[mbOk],0);
+Exit;
+end
+ else AssignFile(tf,filePath);
+  Reset(tf);
+  while not eof(tf) do BEGIN
+   Readln(tf, sLine);
+   sTotal:= sTotal + sLine + ' ';
+  END;
+try
+ sSQL:= sTotal;
+ runSQL(sSQL);
+except
+ messageDlg('Error when running SQL, please check '+fileName+' for errors/typos!',
+ mtWarning,[mbOk],0);
+end;
+end;
+
 procedure TfrmDBDisplay.btnNextClick(Sender: TObject);
 begin
   if dbgDisplay.DataSource = DM2022.dbsSQL then
@@ -112,7 +140,7 @@ begin
 rdDisplayClick(rdDisplay);
 end;
 
-procedure TfrmDBDisplay.Button1Click(Sender: TObject);
+procedure TfrmDBDisplay.btnPodiumClick(Sender: TObject);
 var winner_score: Array of Integer;
     winner_name : Array of String;
     iLoop, iLoop2       : Integer;
@@ -204,7 +232,7 @@ with DM2022 do begin
        sItem := cmbFilter.Items[iLoop];
        if (sItem = 'ID') OR (sItem = 'id') OR (sItem = 'player1_id') OR
        (sItem = 'player2_id') OR (sItem = 'player1_score') OR
-       (sItem = 'player2_score')
+       (sItem = 'player2_score') OR (sItem = 'Wins')
         then sLine := sLine + IntToStr(qry[sItem]) + #9
         else if (sItem = 'birth')
          then sLine := sLine + DateToStr(qry[sItem]) + #9

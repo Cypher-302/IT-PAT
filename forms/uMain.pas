@@ -9,7 +9,7 @@ uses
   ImgList, ToolWin, Buttons, Mask, DBCtrls, uRegistration, uDM2022, uDBDisplay;
 
 type
-  TfrmQuestion2 = class(TForm)
+  TfrmMain = class(TForm)
     pgcQuestions: TPageControl;
     tbsQ2_2: TTabSheet;
     tbsQ2_1: TTabSheet;
@@ -178,7 +178,7 @@ type
   end;
 
 var
-  frmQuestion2: TfrmQuestion2;
+  frmMain: TfrmMain;
 
 implementation
 
@@ -187,12 +187,12 @@ Uses uLogin;
 const
   help_online = 'https://github.com/GrahamPearl/INFT11/wiki';
 
-procedure TfrmQuestion2.Online1Click(Sender: TObject);
+procedure TfrmMain.Online1Click(Sender: TObject);
 begin
   WebBrowser1.Navigate(help_online);
 end;
 
-procedure TfrmQuestion2.runSQL(sSQL: String);
+procedure TfrmMain.runSQL(sSQL: String);
 begin
   DM2022.qry.SQL.Clear;
   DM2022.qry.SQL.ADD(sSQL);
@@ -200,7 +200,7 @@ begin
   Tabs();
 end;
 
-procedure TfrmQuestion2.sqlExecuteStatement;
+procedure TfrmMain.sqlExecuteStatement;
 var
   sSQL: String;
   iLoop: Integer;
@@ -211,13 +211,13 @@ begin
   self.runSQL(sSQL);
 end;
 
-procedure TfrmQuestion2.SQLfromTextfile1Click(Sender: TObject);
+procedure TfrmMain.SQLfromTextfile1Click(Sender: TObject);
 begin
   if OpenDialog1.Execute then
     redSQL.Lines.LoadFromFile(OpenDialog1.FileName);
 end;
 
-procedure TfrmQuestion2.Tabs;
+procedure TfrmMain.Tabs;
 begin
 
    //dbgSQL.Columns[0].Width := 150;
@@ -225,22 +225,22 @@ begin
 
 end;
 
-procedure TfrmQuestion2.actionADOEventsClick(Sender: TObject);
+procedure TfrmMain.actionADOEventsClick(Sender: TObject);
 begin
   self.pgcQuestions.ActivePageIndex := 0;
 end;
 
-procedure TfrmQuestion2.actionSQLEventsClick(Sender: TObject);
+procedure TfrmMain.actionSQLEventsClick(Sender: TObject);
 begin
   self.pgcQuestions.ActivePageIndex := 1;
 end;
 
-procedure TfrmQuestion2.adoDBPlayersAfterScroll(DataSet: TDataSet);
+procedure TfrmMain.adoDBPlayersAfterScroll(DataSet: TDataSet);
 begin
   self.applyFilter;
 end;
 
-procedure TfrmQuestion2.applyFilter;
+procedure TfrmMain.applyFilter;
 var
   playerID: String;
 begin
@@ -251,84 +251,84 @@ begin
   DM2022.tblGames.Filtered := True;
 end;
 
-procedure TfrmQuestion2.actionReportEventsClick(Sender: TObject);
+procedure TfrmMain.actionReportEventsClick(Sender: TObject);
 begin
   self.pgcQuestions.ActivePageIndex := 2;
 end;
 
 // ==========================Question 2.1=======================================
 
-procedure TfrmQuestion2.btnFirstClick(Sender: TObject);
+procedure TfrmMain.btnFirstClick(Sender: TObject);
 begin
   // Question 1.1
   DM2022.tblPlayers.First;
 end;
 
-procedure TfrmQuestion2.btnLastClick(Sender: TObject);
+procedure TfrmMain.btnLastClick(Sender: TObject);
 begin
   // Question 1.4
   DM2022.tblPlayers.Last;
 end;
 
-procedure TfrmQuestion2.btnNextClick(Sender: TObject);
+procedure TfrmMain.btnNextClick(Sender: TObject);
 begin
   // Question 1.3
   DM2022.tblPlayers.Next;
 end;
 
-procedure TfrmQuestion2.btnPriorClick(Sender: TObject);
+procedure TfrmMain.btnPriorClick(Sender: TObject);
 begin
   // Question 1.2
   DM2022.tblPlayers.Prior;
 end;
 
-procedure TfrmQuestion2.btnQ2_1_1Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_1Click(Sender: TObject);
 begin
   // Question 2.1.1
 
 end;
 
-procedure TfrmQuestion2.btnQ2_1_2Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_2Click(Sender: TObject);
 begin
   // Question 2.1.2
 
 end;
 
-procedure TfrmQuestion2.btnQ2_1_3Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_3Click(Sender: TObject);
 begin
   // Question 2.1.3
 
 end;
 
-procedure TfrmQuestion2.btnQ2_1_4Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_4Click(Sender: TObject);
 begin
   // Question 2.1.4
 
   self.runSQL('');
 end;
 
-procedure TfrmQuestion2.btnQ2_1_5Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_5Click(Sender: TObject);
 begin
   self.runSQL('');
 end;
 
-procedure TfrmQuestion2.btnQ2_1_6Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_6Click(Sender: TObject);
 begin
   self.runSQL('');
 end;
 
-procedure TfrmQuestion2.btnQ2_1_7Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_7Click(Sender: TObject);
 begin
   self.runSQL('');
 
 end;
 
-procedure TfrmQuestion2.btnQ2_1_8Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_8Click(Sender: TObject);
 begin
   self.runSQL('');
 end;
 
-procedure TfrmQuestion2.btnQ2_1_9Click(Sender: TObject);
+procedure TfrmMain.btnQ2_1_9Click(Sender: TObject);
 var
   iLoop: Integer;
   aLine: String;
@@ -351,23 +351,23 @@ begin
   showMessage('Report Generated');
 end;
 
-procedure TfrmQuestion2.btnQ2_2_1Click(Sender: TObject);
+procedure TfrmMain.btnQ2_2_1Click(Sender: TObject);
 begin
   self.runSQL('');
 end;
 
-procedure TfrmQuestion2.btnQ2_2_2Click(Sender: TObject);
+procedure TfrmMain.btnQ2_2_2Click(Sender: TObject);
 begin
   self.runSQL('');
 end;
 
-procedure TfrmQuestion2.btnUpdateClick(Sender: TObject);
+procedure TfrmMain.btnUpdateClick(Sender: TObject);
 begin
 
 end;
 
 // uses DateUtils;
-procedure TfrmQuestion2.btnValidateClick(Sender: TObject);
+procedure TfrmMain.btnValidateClick(Sender: TObject);
 begin
   IF Length(edtFirstName.text) > 3 then
     edtFirstName.Color := clWindow
@@ -394,17 +394,17 @@ begin
 
 end;
 
-function TfrmQuestion2.isValidEmail(data: String): Boolean;
+function TfrmMain.isValidEmail(data: String): Boolean;
 begin
   result := True;
 end;
 
-function TfrmQuestion2.isValidPhone(data: String): Boolean;
+function TfrmMain.isValidPhone(data: String): Boolean;
 begin
   result := True;
 end;
 
-procedure TfrmQuestion2.Login2Click(Sender: TObject);
+procedure TfrmMain.Login2Click(Sender: TObject);
 begin
   frmLogin.ShowModal;
   if (frmLogin.edtEmail.text = 'Admin') AND
@@ -416,7 +416,7 @@ begin
     enableLogin(-1);
 end;
 
-procedure TfrmQuestion2.enableLogin(usertype: Integer);
+procedure TfrmMain.enableLogin(usertype: Integer);
 begin
   self.ADo1.Enabled := (usertype = 0);
   self.SQLEvents1.Enabled := (usertype = 1);
@@ -440,27 +440,27 @@ begin
 
 end;
 
-procedure TfrmQuestion2.Logout1Click(Sender: TObject);
+procedure TfrmMain.Logout1Click(Sender: TObject);
 begin
   enableLogin(-1);
 end;
 
-procedure TfrmQuestion2.Button3Click(Sender: TObject);
+procedure TfrmMain.Button3Click(Sender: TObject);
 begin
   sqlExecuteStatement;
 end;
 
-procedure TfrmQuestion2.dbgMembersCellClick(Column: TColumn);
+procedure TfrmMain.dbgMembersCellClick(Column: TColumn);
 begin
   self.applyFilter;
 end;
 
-procedure TfrmQuestion2.dbgMembersKeyPress(Sender: TObject; var Key: Char);
+procedure TfrmMain.dbgMembersKeyPress(Sender: TObject; var Key: Char);
 begin
   self.applyFilter;
 end;
 
-procedure TfrmQuestion2.dbgMembersMouseWheel(Sender: TObject;
+procedure TfrmMain.dbgMembersMouseWheel(Sender: TObject;
   Shift: TShiftState; WheelDelta: Integer; MousePos: TPoint;
   var Handled: Boolean);
 begin
@@ -470,12 +470,12 @@ end;
 // =================================Question 2.2==============================================
 {$REGION}
 
-procedure TfrmQuestion2.FormActivate(Sender: TObject);
+procedure TfrmMain.FormActivate(Sender: TObject);
 begin
   // enableLogin(-1);
 end;
 
-procedure TfrmQuestion2.FormatTabs;
+procedure TfrmMain.FormatTabs;
 begin
   redOutput.Lines.Clear;
   redOutput.Paragraph.TabCount := 2;
@@ -490,17 +490,17 @@ begin
 
 end;
 
-procedure TfrmQuestion2.FormCreate(Sender: TObject);
+procedure TfrmMain.FormCreate(Sender: TObject);
 begin
   // PROVIDED CODE - DO NOT MODIFY!
 end;
 
-procedure TfrmQuestion2.imgLoginClick(Sender: TObject);
+procedure TfrmMain.imgLoginClick(Sender: TObject);
 begin
   frmLogin.ShowModal;
 end;
 
-procedure TfrmQuestion2.imgRegisterClick(Sender: TObject);
+procedure TfrmMain.imgRegisterClick(Sender: TObject);
 begin
   try
     DM2022.tblPlayers.Insert;
@@ -514,7 +514,7 @@ begin
   end;
 end;
 
-procedure TfrmQuestion2.imgUpdateClick(Sender: TObject);
+procedure TfrmMain.imgUpdateClick(Sender: TObject);
 begin
   try
     DM2022.tblPlayers.Edit;
@@ -528,12 +528,12 @@ begin
   end;
 end;
 
-procedure TfrmQuestion2.Insert2Click(Sender: TObject);
+procedure TfrmMain.Insert2Click(Sender: TObject);
 begin
   DM2022.tblPlayers.Insert;
 end;
 
-procedure TfrmQuestion2.dbsGamesDataChange(Sender: TObject; Field: TField);
+procedure TfrmMain.dbsGamesDataChange(Sender: TObject; Field: TField);
 begin
   try
 
@@ -542,51 +542,51 @@ begin
   end;
 end;
 
-procedure TfrmQuestion2.Delete2Click(Sender: TObject);
+procedure TfrmMain.Delete2Click(Sender: TObject);
 begin
   IF messageDlg('Are you sure you want to delete this record?', mtConfirmation,
     [mbYes, mbNo], 0) = mrYes then
     DM2022.tblPlayers.Delete;
 end;
 
-procedure TfrmQuestion2.dtpBirthCloseUp(Sender: TObject);
+procedure TfrmMain.dtpBirthCloseUp(Sender: TObject);
 begin
   self.edtBirth.text := DateToStr(self.dtpBirth.Date);
 end;
 
-procedure TfrmQuestion2.dtpBirthExit(Sender: TObject);
+procedure TfrmMain.dtpBirthExit(Sender: TObject);
 begin
   self.edtBirth.text := DateToStr(self.dtpBirth.Date);
 end;
 
-procedure TfrmQuestion2.btnOkayClick(Sender: TObject);
+procedure TfrmMain.btnOkayClick(Sender: TObject);
 begin
   DM2022.tblPlayers.Post;
 end;
 
-procedure TfrmQuestion2.Edit2Click(Sender: TObject);
+procedure TfrmMain.Edit2Click(Sender: TObject);
 begin
   DM2022.tblPlayers.Edit;
 end;
 
-procedure TfrmQuestion2.ExecuteSQLStatement1Click(Sender: TObject);
+procedure TfrmMain.ExecuteSQLStatement1Click(Sender: TObject);
 begin
   sqlExecuteStatement;
 end;
 
-procedure TfrmQuestion2.Exit1Click(Sender: TObject);
+procedure TfrmMain.Exit1Click(Sender: TObject);
 begin
   if messageDlg('Are you sure you want to exit', mtConfirmation, [mbYes, mbNo],
     0) = mrYes then
     Application.Terminate;
 end;
 
-procedure TfrmQuestion2.btnDBDisplayClick(Sender: TObject);
+procedure TfrmMain.btnDBDisplayClick(Sender: TObject);
 begin
   frmDBDisplay.ShowModal;
 end;
 
-procedure TfrmQuestion2.btnDBRestoreClick(Sender: TObject);
+procedure TfrmMain.btnDBRestoreClick(Sender: TObject);
 begin
   // PROVIDED CODE - DO NOT MODIFY!
   if messageDlg('Are you sure you want to restore', mtConfirmation,
@@ -606,7 +606,7 @@ begin
   END;
 end;
 
-procedure TfrmQuestion2.btnDeleteClick(Sender: TObject);
+procedure TfrmMain.btnDeleteClick(Sender: TObject);
 var
   id: Integer;
 begin

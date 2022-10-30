@@ -3601,7 +3601,7 @@ object frmDBDisplay: TfrmDBDisplay
     Height = 25
     Caption = 'View Podium Positions'
     TabOrder = 9
-    OnClick = Button1Click
+    OnClick = btnPodiumClick
   end
   object cmbSort: TComboBox
     Left = 942
@@ -3620,6 +3620,15 @@ object frmDBDisplay: TfrmDBDisplay
     TabOrder = 11
     Text = 'Search'
     OnChange = cmbSearchChange
+  end
+  object btnLoadSQL: TButton
+    Left = 942
+    Top = 576
+    Width = 172
+    Height = 25
+    Caption = 'Load SQL'
+    TabOrder = 12
+    OnClick = btnLoadSQLClick
   end
   object popupDBGrids: TPopupMenu
     Left = 1072

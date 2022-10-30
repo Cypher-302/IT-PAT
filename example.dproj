@@ -51,9 +51,6 @@
 			<DelphiCompile Include="example.dpr">
 				<MainSource>MainSource</MainSource>
 			</DelphiCompile>
-			<DCCReference Include="forms\uMain.pas">
-				<Form>frmMain</Form>
-			</DCCReference>
 			<DCCReference Include="forms\uLogin.pas">
 				<Form>frmLogin</Form>
 			</DCCReference>
@@ -78,6 +75,10 @@
 			</DCCReference>
 			<DCCReference Include="forms\uAddTournament.pas">
 				<Form>frmAddTournament</Form>
+			</DCCReference>
+			<DCCReference Include="forms\uMain.pas">
+				<Form>frmAddTournament - not used in project,
+   but if I try remove it, everything breaks.</Form>
 			</DCCReference>
 			<DCCReference Include="forms\uForgotPassword.pas">
 				<Form>frmForgotPassword</Form>
@@ -120,20 +121,21 @@
 						<VersionInfo Name="Special">False</VersionInfo>
 						<VersionInfo Name="Private">False</VersionInfo>
 						<VersionInfo Name="DLL">False</VersionInfo>
-						<VersionInfo Name="Locale">7177</VersionInfo>
+						<VersionInfo Name="Locale">1033</VersionInfo>
 						<VersionInfo Name="CodePage">1252</VersionInfo>
 					</VersionInfo>
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
-						<VersionInfoKeys Name="FileDescription"/>
+						<VersionInfoKeys Name="FileDescription">Question2_P</VersionInfoKeys>
 						<VersionInfoKeys Name="FileVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>
 						<VersionInfoKeys Name="OriginalFilename"/>
-						<VersionInfoKeys Name="ProductName"/>
+						<VersionInfoKeys Name="ProductName">Question2_P</VersionInfoKeys>
 						<VersionInfoKeys Name="ProductVersion">1.0.0.0</VersionInfoKeys>
 						<VersionInfoKeys Name="Comments"/>
+						<VersionInfoKeys Name="ProgramID">com.embarcadero.Question2_P</VersionInfoKeys>
 					</VersionInfoKeys>
 				</Delphi.Personality>
 				<Platforms>
