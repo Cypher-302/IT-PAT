@@ -107,9 +107,13 @@ var tf: TextFile;
 begin
 AssignFile(tf, '.\reports\changelog.txt');
 Append(tf);
- DM2022.tblPlayers.Locate('email',userEmail,[]);
- userID:= DM2022.tblPlayers['ID'];
- Writeln(tf, 'User: '+IntToStr(userID)+' '+input);
+if DM2022.tblPlayers.Locate('email',userEmail,[]) = TRUE then
+ BEGIN
+  DM2022.tblPlayers.Locate('email',userEmail,[]);
+  userID:= DM2022.tblPlayers['ID'];
+  Writeln(tf, 'User: '+IntToStr(userID)+' '+input);
+ END
+ else Writeln(tf, 'Admin: '+input);
  CloseFile(tf);
 end;
 

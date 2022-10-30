@@ -1,1 +1,2 @@
 User: 123 requests a password change!
+Admin: deleted record in TADOTable.

@@ -20,13 +20,12 @@ type
     clkInsert: TMenuItem;
     clkEdit: TMenuItem;
     clkDelete: TMenuItem;
-    btnSort: TButton;
-    btnSearch: TButton;
     cmbFilter: TComboBox;
     btnRefresh: TButton;
-    btnPodium: TImage;
-    Button2: TButton;
-    Button1: TButton;
+    btnReport: TButton;
+    btnPodium: TButton;
+    cmbSort: TComboBox;
+    cmbSearch: TComboBox;
     procedure FormActivate(Sender: TObject);
     procedure rdDisplayClick(Sender: TObject);
     procedure btnNextClick(Sender: TObject);
@@ -39,14 +38,13 @@ type
     procedure updateCol();
     procedure FitGrid(Grid: TDBGrid);
     procedure refresh(dbgDS: TDataSource);
-    procedure btnDelete1000Click(Sender: TObject);
-    procedure btnSearchClick(Sender: TObject);
     procedure cmbFilterChange(Sender: TObject);
     procedure btnRefreshClick(Sender: TObject);
-    procedure btnPodiumClick(Sender: TObject);
-    procedure Button2Click(Sender: TObject);
+    procedure btnReportClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     function accessToRecord():Boolean;
+    procedure cmbSortChange(Sender: TObject);
+    procedure cmbSearchChange(Sender: TObject);
   private
     { Private declarations }
   public
@@ -109,7 +107,12 @@ begin
   else selectedDB.Prior;
 end;
 
-procedure TfrmDBDisplay.btnPodiumClick(Sender: TObject);
+procedure TfrmDBDisplay.btnRefreshClick(Sender: TObject);
+begin
+rdDisplayClick(rdDisplay);
+end;
+
+procedure TfrmDBDisplay.Button1Click(Sender: TObject);
 var winner_score: Array of Integer;
     winner_name : Array of String;
     iLoop, iLoop2       : Integer;
@@ -157,33 +160,16 @@ while not DM2022.tblGames.Eof do with DM2022 do
 
 end;
 
-procedure TfrmDBDisplay.btnRefreshClick(Sender: TObject);
-begin
-rdDisplayClick(rdDisplay);
-end;
-
-procedure TfrmDBDisplay.btnSearchClick(Sender: TObject);
-var sFind : String;
-begin
-  sFind := QuotedStr(InputBox('First name','Enter search below: ','Babita'));
-  sSQL := 'SELECT * FROM players WHERE first_name LIKE '+sFind;
-  self.runSQL(sSQL);
-end;
-
-procedure TfrmDBDisplay.Button1Click(Sender: TObject);
-begin
-btnPodiumClick(Sender);
-end;
-
-procedure TfrmDBDisplay.Button2Click(Sender: TObject);
+procedure TfrmDBDisplay.btnReportClick(Sender: TObject);
 var tf: TextFile;
     iLoop: Integer;
-    selectedDS : TDataSet;
-    aLine: String;
+    isFiltered: Boolean;
+    sLine,sHeader,sItem: String;
 begin
+  isFiltered := FALSE;
   AssignFile(tf, '.\reports\report2.txt');
   ReWrite(tf);
-  selectedDS := dbgDisplay.DataSource.DataSet;
+  {selectedDS := dbgDisplay.DataSource.DataSet;
   //DM2022.qry.SaveToFile('.\reports\report2.txt',pfXML);
   //while not DM2022.qry.eof do
   //writeln(tf, DM2022.qry.
@@ -194,12 +180,68 @@ begin
         begin
           if Assigned(dbgDisplay.Columns[iLoop].Field) then
           begin
-            aLine := dbgDisplay.Columns[iLoop].Field.FieldName+#9;
+            aLine := dbgDisplay.Columns[iLoop].Field.AsString+#9;
+            showMessage(aLine);
           end;
         end;
         writeln(tf, aLine);
         selectedDS.Next;
-      end;
+      end;}
+  for iLoop := 0 to cmbFilter.Items.Count
+   do sHeader := sHeader+cmbFilter.Items[iLoop]+#9;
+
+Writeln(tf,sHeader);
+ if dbgDisplay.DataSource = DM2022.dbsSQL then isFiltered := TRUE;
+
+with DM2022 do begin
+ if isFiltered
+  then BEGIN
+   qry.First;
+   while not qry.Eof do
+    begin
+     for iLoop := 0 to cmbFilter.Items.Count-1 do
+      BEGIN
+       sItem := cmbFilter.Items[iLoop];
+       if (sItem = 'ID') OR (sItem = 'id') OR (sItem = 'player1_id') OR
+       (sItem = 'player2_id') OR (sItem = 'player1_score') OR
+       (sItem = 'player2_score')
+        then sLine := sLine + IntToStr(qry[sItem]) + #9
+        else if (sItem = 'birth')
+         then sLine := sLine + DateToStr(qry[sItem]) + #9
+        else if (sItem = 'gender') AND (qry[sItem] = 'Male')
+         then sLine := sLine + qry[sItem] + #9 + #9
+        else sLine := sLine + qry[sItem] + #9;
+      END;
+   WriteLn(tf, sLine);
+   sLine:= '';
+   qry.Next;
+  end;
+  END
+  else BEGIN
+   selectedDB.First;
+   while not selectedDB.Eof do
+    begin
+     for iLoop := 0 to cmbFilter.Items.Count-1 do
+      BEGIN
+       sItem := cmbFilter.Items[iLoop];
+       //showMessage(sItem);
+       if (sItem = 'ID') OR (sItem = 'id') OR (sItem = 'player1_id') OR
+       (sItem = 'player2_id') OR (sItem = 'player1_score') OR
+       (sItem = 'player2_score')
+        then sLine := sLine + IntToStr(selectedDB[sItem]) + #9
+        else if (sItem = 'birth')
+         then sLine := sLine + DateToStr(selectedDB[sItem]) + #9
+        else if (sItem = 'gender') AND (selectedDB[sItem] = 'Male')
+         then sLine := sLine + selectedDB[sItem] + #9 + #9
+        else sLine := sLine + selectedDB[sItem] + #9;
+       END;
+     WriteLn(tf, sLine);
+     sLine:= '';
+     selectedDB.Next;
+    end;
+  END;
+end;
+  showMessage('ran');
   CloseFile(tf);
 end;
 
@@ -216,21 +258,40 @@ begin
   self.runSQL(sSQL);
 end;
 
-procedure TfrmDBDisplay.btnDelete1000Click(Sender: TObject);
-var
-  id: Integer;
+procedure TfrmDBDisplay.cmbSearchChange(Sender: TObject);
+var sFind, sField, sTable : String;
 begin
-  DM2022.tblPlayers.Last;
-  id := DM2022.tblPlayers['ID'];
+  sField := cmbSearch.Items[cmbSearch.ItemIndex];
+  sFind := QuotedStr(InputBox('Search','Enter search item for: '+sField,''));
 
-  while (id > 1000) do
-  begin
-    DM2022.tblPlayers.Delete;
-    showMessage('Deleted record with ID: ' + IntToStr(id));
+  if selectedDB = DM2022.tblGames then sTable := 'games'
+  else sTable := 'players';
 
-    DM2022.tblPlayers.Last;
-    id := DM2022.tblPlayers['ID'];
+  sSQL := 'SELECT * FROM '+sTable+' WHERE '+sField+' LIKE '+sFind;
+  self.runSQL(sSQL);
+end;
+
+procedure TfrmDBDisplay.cmbSortChange(Sender: TObject);
+var sType, sTable, sField : String;
+begin
+  sField := cmbSort.Items[cmbSort.ItemIndex];
+  sType := InputBox('Sorting','Do you want to sort by Ascending or Descending: ','Ascending');
+
+  if sType = 'Ascending'
+   then sType := 'ASC'
+  else if sType = 'Descending'
+   then sType := 'DESC'
+  else begin
+   messageDlg('Please input either "Ascending" or "Descending"',mtWarning,[mbOk],0);
+   Exit;
   end;
+
+  if selectedDB = DM2022.tblGames
+   then sTable := 'games'
+   else sTable := 'players';
+
+  sSQL := 'SELECT * FROM '+sTable+' ORDER BY '+sField +' '+ sType;
+  self.runSQL(sSQL);
 end;
 
 function TfrmDBDisplay.accessToRecord: Boolean;
@@ -265,6 +326,10 @@ begin
     mrYes: begin
             selectedDB.Delete;
             messageDlg('Record deleted.', mtInformation, [mbOk], 0);
+            if selectedDB = DM2022.tblPlayers
+             then frmHome.logChange('Deleted record in tblPlayers.')
+             else if selectedDB = DM2022.tblGames
+              then frmHome.logChange('Deleted record in tblGames.');
            end;
     mrNo:
       messageDlg('Record deletion cancelled.', mtInformation, [mbOk], 0);
@@ -284,7 +349,11 @@ begin
       then frmEditTournament.ShowModal
       else frmEdit.ShowModal;
     selectedDB.Post;
-    //changelog - Insert
+
+    if selectedDB = DM2022.tblPlayers
+     then frmHome.logChange('Edited record in tblPlayers.')
+    else if selectedDB = DM2022.tblGames
+     then frmHome.logChange('Edited record in tblGames.');
   except
     messageDlg('Unable to insert new registration', mtWarning, [mbOk], 0);
   end;
@@ -300,6 +369,11 @@ else
      then frmRegistration.ShowModal
      else frmAddTournament.ShowModal;
     selectedDB.Post;
+
+    if selectedDB = DM2022.tblPlayers
+     then frmHome.logChange('Inserted record into tblPlayers.')
+    else if selectedDB = DM2022.tblGames
+     then frmHome.logChange('Inserted record into tblGames.');
   except
     messageDlg('Unable to insert new registration!'+#13+
     'Please ensure that you have either the members or players database selected.',
@@ -374,19 +448,22 @@ begin
 
   if dbgDisplay.DataSource = DM2022.dbsPlayers then selectedDB := DM2022.tblPlayers
   else if dbgDisplay.DataSource = DM2022.dbsGames then selectedDB := DM2022.tblGames;
- // else if dbgDisplay.DataSource = DM2022.dbsSQL then selectedDB := DM2022.dbsSQL;
-
 
   columnsAMT := dbgDisplay.Columns.Count - 1;
 
   if columnsAMT = 8 then dbgDisplay.Columns[columnsAMT].Visible := FALSE;
 
   cmbFilter.Items.Clear;
+  cmbSort.Items.Clear;
+  cmbSearch.Items.Clear;
   for iLoop := 0 to columnsAMT do BEGIN
     dbgDisplay.Columns[iLoop].Color := dbColor;
     colWidth := colWidth + dbgDisplay.Columns[iLoop].Width; //finds total width of all columns
-    if not(dbgDisplay.Columns[iLoop].Field.FieldName = 'password') then
+    if not(dbgDisplay.Columns[iLoop].Field.FieldName = 'password') then begin
      cmbFilter.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
+     cmbSort.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
+     cmbSearch.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
+    end;
   END;
   dbgDisplay.Width := colWidth + 38;
 end;

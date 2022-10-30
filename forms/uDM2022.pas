@@ -73,7 +73,7 @@ procedure TDM2022.tblGamesAfterScroll(DataSet: TDataSet);
 begin
 AssignFile(log, 'log.txt');
     Append(log);
-    Writeln(log, 'Scrolling Games: '+IntToStr(tblPlayers.RecNo)+'of '+ IntToStr(tblPlayers.Recordset.RecordCount ));
+    Writeln(log, 'Scrolling Games: '+IntToStr(tblPlayers.RecNo)+' of '+ IntToStr(tblPlayers.Recordset.RecordCount ));
 CloseFile(log);
 end;
 
