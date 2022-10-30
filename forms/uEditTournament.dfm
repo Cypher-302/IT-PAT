@@ -857,8 +857,9 @@ object frmEditTournament: TfrmEditTournament
     Top = 366
     Width = 185
     Height = 38
+    OnClick = imgSignUpClick
   end
-  object edtPlayer1ID: TDBEdit
+  object edtP1id: TDBEdit
     Left = 56
     Top = 224
     Width = 217
@@ -874,7 +875,7 @@ object frmEditTournament: TfrmEditTournament
     ParentFont = False
     TabOrder = 0
   end
-  object edtLastName: TDBEdit
+  object edtP1Score: TDBEdit
     Left = 56
     Top = 286
     Width = 217
@@ -890,7 +891,7 @@ object frmEditTournament: TfrmEditTournament
     ParentFont = False
     TabOrder = 1
   end
-  object edtPlayer2ID: TDBEdit
+  object edtP2id: TDBEdit
     Left = 336
     Top = 224
     Width = 217
@@ -906,7 +907,7 @@ object frmEditTournament: TfrmEditTournament
     ParentFont = False
     TabOrder = 2
   end
-  object edtPhone: TDBEdit
+  object edtP2Score: TDBEdit
     Left = 336
     Top = 286
     Width = 217

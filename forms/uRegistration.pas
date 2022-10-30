@@ -174,6 +174,7 @@ if inputValidation then
    BEGIN
     DM2022.tblPlayers['birth'] := DateToStr(dtpBirth.Date);
     frmHome.isValid := TRUE;
+    frmHome.userEmail := edtEmail.Text;
     MessageDlg('Welcome '+edtFirstName.Text+'!', mtInformation, [mbOk], 0);
     Self.Close;
    END

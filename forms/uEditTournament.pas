@@ -4,17 +4,17 @@ interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, uDBDisplay, DBCtrls, DateUtils, pngimage, ExtCtrls, ComCtrls,
-  StdCtrls, Mask;
+  Dialogs, DBCtrls, DateUtils, pngimage, ExtCtrls, ComCtrls, StdCtrls, Mask;
 
 type
   TfrmEditTournament = class(TForm)
     imgBackground: TImage;
-    edtPlayer1ID: TDBEdit;
-    edtLastName: TDBEdit;
-    edtPlayer2ID: TDBEdit;
-    edtPhone: TDBEdit;
+    edtP1id: TDBEdit;
+    edtP1Score: TDBEdit;
+    edtP2id: TDBEdit;
+    edtP2Score: TDBEdit;
     imgSignUp: TImage;
+    procedure imgSignUpClick(Sender: TObject);
   private
     { Private declarations }
   public
@@ -25,7 +25,14 @@ var
   frmEditTournament: TfrmEditTournament;
 
 implementation
+uses uAddTournament, uDM2022, uDBDisplay;
 
 {$R *.dfm}
+
+procedure TfrmEditTournament.imgSignUpClick(Sender: TObject);
+begin
+ if frmAddTournament.validation(edtP1id.Text,edtP2id.Text,edtP1Score.Text,edtP2Score.Text) = TRUE
+  then self.Close;
+ end;
 
 end.

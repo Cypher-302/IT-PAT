@@ -3868,17 +3868,17 @@ object frmDBDisplay: TfrmDBDisplay
     OnClick = rdDisplayClick
   end
   object btnSort: TButton
-    Left = 953
+    Left = 942
     Top = 407
-    Width = 75
+    Width = 172
     Height = 25
     Caption = 'Sort'
     TabOrder = 6
   end
   object btnSearch: TButton
-    Left = 953
+    Left = 942
     Top = 438
-    Width = 75
+    Width = 172
     Height = 25
     Caption = 'Search'
     TabOrder = 7
@@ -3906,9 +3906,9 @@ object frmDBDisplay: TfrmDBDisplay
     OnClick = btnRefreshClick
   end
   object Button2: TButton
-    Left = 953
-    Top = 493
-    Width = 118
+    Left = 942
+    Top = 509
+    Width = 172
     Height = 25
     Caption = 'Generate report'
     TabOrder = 10

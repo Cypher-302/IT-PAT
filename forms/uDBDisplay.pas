@@ -5,7 +5,7 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
   DBGrids, pngimage, ExtCtrls, StdCtrls, Grids, jpeg, CheckLst, Dialogs,
-  uDM2022, uLogin, Menus, uRegistration, DB, ADODB, DBCtrls;
+  Menus, uRegistration, DB, ADODB, DBCtrls;
 
 type
   TfrmDBDisplay = class(TForm)
@@ -46,6 +46,7 @@ type
     procedure btnPodiumClick(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button1Click(Sender: TObject);
+    function accessToRecord():Boolean;
   private
     { Private declarations }
   public
@@ -63,7 +64,7 @@ var
   columnsAMT: Integer;
 
 implementation
-uses uEdit;
+uses uEdit, uAddTournament, uEditTournament, uDM2022, uLogin, uHome;
 
 {$R *.dfm}
  //   sSQL := '';       self.runSQL(sSQL);
@@ -72,32 +73,40 @@ begin
   DM2022.qry.SQL.Clear;
   DM2022.qry.SQL.ADD(sSQL);
   DM2022.qry.Open;
-  showMessage('ran sql');
   Tabs();
 end;
 
 procedure TfrmDBDisplay.Tabs;
 begin
-{  DataSrc := TDataSource.Create(Self);
-  DataSrc.DataSet := DM2022.qry;
-  DataSrc.Enabled := TRUE;}
-  //dbgDisplay.DataSource := DataSrc;
   refresh(DM2022.dbsSQL);
 end;
 
 procedure TfrmDBDisplay.btnFirstClick(Sender: TObject);
 begin
-  selectedDB.First;                                   //don't think that this will end up moving it on the DataSrc display
+  if dbgDisplay.DataSource = DM2022.dbsSQL then
+  DM2022.qry.First
+  else selectedDB.First;
 end;
 
 procedure TfrmDBDisplay.btnLastClick(Sender: TObject);
 begin
-  selectedDB.Last;
+  if dbgDisplay.DataSource = DM2022.dbsSQL then
+  DM2022.qry.Last
+  else selectedDB.Last;
 end;
 
 procedure TfrmDBDisplay.btnNextClick(Sender: TObject);
 begin
-  selectedDB.Next;
+  if dbgDisplay.DataSource = DM2022.dbsSQL then
+  DM2022.qry.Next
+  else selectedDB.Next;
+end;
+
+procedure TfrmDBDisplay.btnPriorClick(Sender: TObject);
+begin
+  if dbgDisplay.DataSource = DM2022.dbsSQL then
+  DM2022.qry.Prior
+  else selectedDB.Prior;
 end;
 
 procedure TfrmDBDisplay.btnPodiumClick(Sender: TObject);
@@ -146,13 +155,6 @@ while not DM2022.tblGames.Eof do with DM2022 do
 
  end;
 
- showmessage('ran');
-
-end;
-
-procedure TfrmDBDisplay.btnPriorClick(Sender: TObject);
-begin
-  selectedDB.Prior;
 end;
 
 procedure TfrmDBDisplay.btnRefreshClick(Sender: TObject);
@@ -175,11 +177,30 @@ end;
 
 procedure TfrmDBDisplay.Button2Click(Sender: TObject);
 var tf: TextFile;
+    iLoop: Integer;
+    selectedDS : TDataSet;
+    aLine: String;
 begin
   AssignFile(tf, '.\reports\report2.txt');
   ReWrite(tf);
- // while not  do
-
+  selectedDS := dbgDisplay.DataSource.DataSet;
+  //DM2022.qry.SaveToFile('.\reports\report2.txt',pfXML);
+  //while not DM2022.qry.eof do
+  //writeln(tf, DM2022.qry.
+  //writeln(tf, DM2022.dbsSQL.ToString);
+        while not selectedDS.Eof do
+      begin
+        for iLoop := 0 to dbgDisplay.Columns.Count - 1 do
+        begin
+          if Assigned(dbgDisplay.Columns[iLoop].Field) then
+          begin
+            aLine := dbgDisplay.Columns[iLoop].Field.FieldName+#9;
+          end;
+        end;
+        writeln(tf, aLine);
+        selectedDS.Next;
+      end;
+  CloseFile(tf);
 end;
 
 procedure TfrmDBDisplay.cmbFilterChange(Sender: TObject);
@@ -212,6 +233,27 @@ begin
   end;
 end;
 
+function TfrmDBDisplay.accessToRecord: Boolean;
+var email, email2: String;
+begin
+result := FALSE;
+ if frmLogin.isAdmin then result := TRUE;
+
+ if dbgDisplay.DataSource = DM2022.dbsPlayers
+  then if selectedDB['email'] = frmHome.userEmail
+   then result := TRUE;
+
+ if dbgDisplay.DataSource = DM2022.dbsGames then
+  begin
+   DM2022.tblPlayers.Locate('ID', selectedDB['player1_id'],[]);
+   email := DM2022.tblPlayers['email'];
+   DM2022.tblPlayers.Locate('ID', selectedDB['player2_id'],[]);
+   email2 := DM2022.tblPlayers['email'];
+   if (frmHome.userEmail = email) OR (frmHome.userEmail = email2)
+    then result := TRUE;
+  end;
+end;
+
 procedure TfrmDBDisplay.clkDeleteClick(Sender: TObject);
 begin
   case messageDlg('Are you sure that you want to delete this record?',
@@ -224,13 +266,21 @@ begin
 end;
 
 procedure TfrmDBDisplay.clkEditClick(Sender: TObject);
+
 begin
+accessToRecord;
+
+ if not(accessToRecord) then messageDlg('In order to edit records:'+#13+
+ 'The selected record must be yours, or'+#13+'You must be logged in as an Admin'
+ , mtInformation, [mbOk], 0)
+ else
   try
-    selectedDB.Insert;
-
-    frmEdit.ShowModal;
-
+    selectedDB.Edit;
+     if dbgDisplay.DataSource = DM2022.dbsGames
+      then frmEditTournament.ShowModal
+      else frmEdit.ShowModal;
     selectedDB.Post;
+    //changelog - Insert
   except
     messageDlg('Unable to insert new registration', mtWarning, [mbOk], 0);
   end;
@@ -238,12 +288,18 @@ end;
 
 procedure TfrmDBDisplay.clkInsertClick(Sender: TObject);
 begin
+if not frmLogin.isAdmin then messageDlg('You need to be logged in as an admin to insert!',mtWarning, [mbOk], 0)
+else
   try
     selectedDB.Insert;
-    frmRegistration.ShowModal;
+    if selectedDB = DM2022.tblPlayers
+     then frmRegistration.ShowModal
+     else frmAddTournament.ShowModal;
     selectedDB.Post;
   except
-    messageDlg('Unable to insert new registration', mtWarning, [mbOk], 0);
+    messageDlg('Unable to insert new registration!'+#13+
+    'Please ensure that you have either the members or players database selected.',
+    mtWarning, [mbOk], 0);
   end;
 end;
 
@@ -328,7 +384,6 @@ begin
     if not(dbgDisplay.Columns[iLoop].Field.FieldName = 'password') then
      cmbFilter.Items.Add(dbgDisplay.Columns[iLoop].Field.FieldName);
   END;
- showMessage('updated column');
   dbgDisplay.Width := colWidth + 38;
 end;
 
@@ -354,7 +409,6 @@ begin
   dbgDisplay.DataSource := dbgDS;
   FitGrid(dbgDisplay);
   updateCol();
-//  showmessage('Refreshed!');
 end;
 
 end.

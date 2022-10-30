@@ -77,10 +77,11 @@ begin
   else if (isAdminSlc = TRUE) AND NOT(edtPassword.Text = 'admin') then
     messageDlg('Password is incorrect!',mtWarning,[mbOk],0);
 
-  if not(isAdminSlc) AND (DM2022.tblPlayers.Locate('email', edtEmail.Text,[]) = TRUE) then
-  BEGIN                                                                         //(DM2022.tblPlayers.Locate('password', edtPassword.Text, []) = TRUE)
-    if (edtPassword.Text = DM2022.tblPlayers['password']) then                  //allows acces for any email if the password exists,
-    begin                                                                       //change to just check the row of the
+  if not(isAdminSlc) AND (DM2022.tblPlayers.Locate('email', edtEmail.Text,[]) = TRUE) then begin
+  DM2022.tblPlayers.Locate('email', edtEmail.Text,[]);
+  BEGIN
+    if (edtPassword.Text = DM2022.tblPlayers['password']) then
+    begin
       messageDlg('Welcome ' + DM2022.tblPlayers['first_name'] + '!',mtInformation, [mbOk], 0);
       frmHome.isValid := TRUE;
       frmHome.userEmail := DM2022.tblPlayers['email'];
@@ -94,6 +95,7 @@ begin
       end;
     end;
   END
+  end
   else if not(isAdminSlc) AND (DM2022.tblPlayers.Locate('email',edtEmail.Text, []) = FALSE) then
     messageDlg('Email was not found!',mtWarning,[mbOk],0);
 
